@@ -41,6 +41,8 @@
       padding: 1em;
       border-radius: 8px;
     }
+    .cc-region { display: none; margin-top: 1em; font-size: 0.95em; }
+    .cc-region a { color: #007AFF; text-decoration: none; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -59,10 +61,19 @@
     <div class="results" id="ltvResults">
       <p id="ltvRatio"></p>
       <p id="ltvEquity"></p>
+      <div class="cc-region" data-region="IE"><a href="https://switcher.ie/mortgages" target="_blank">🇮🇪 Compare Irish mortgage offers</a></div>
+      <div class="cc-region" data-region="GB"><a href="https://moneyfacts.co.uk/mortgages" target="_blank">🇬🇧 Find UK mortgage switch deals</a></div>
+      <div class="cc-region" data-region="US"><a href="https://www.nerdwallet.com/mortgages" target="_blank">🇺🇸 Check current U.S. mortgage rates</a></div>
+      <div class="cc-region" data-region="CA"><a href="https://www.ratehub.ca/mortgage-rates" target="_blank">🇨🇦 See Canadian mortgage offers</a></div>
+      <div class="cc-region" data-region="AU"><a href="https://mozo.com.au/home-loans" target="_blank">🇦🇺 Compare Australian mortgage rates</a></div>
+      <div class="cc-region" data-region="IN"><a href="https://www.bankbazaar.com/" target="_blank">🇮🇳 Explore Indian banking offers</a></div>
+      <div class="cc-region" data-region="FR"><a href="https://www.meilleurtaux.com/" target="_blank">🇫🇷 Compare French mortgage options</a></div>
+      <div class="cc-region" data-region="DE"><a href="https://www.check24.de/" target="_blank">🇩🇪 Compare German mortgage rates</a></div>
+      <div class="cc-region" data-region="default"><p>🌍 We don’t yet have a partner for your region. Try searching: <a id="googleLink" href="#" target="_blank">top bank rates in your country</a>.</p></div>
     </div>
   </div>
 
-  <!-- Overpayment Calculator -->
+  <!-- Mortgage Overpayment Calculator -->
   <div class="cc-card">
     <h2>Mortgage Overpayment Calculator</h2>
     <div class="cc-group">
@@ -112,6 +123,30 @@
   </div>
 
   <script>
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        const country = data.country_code;
+        const regionEls = document.querySelectorAll('.cc-region');
+        let shown = false;
+        regionEls.forEach(el => {
+          if (el.dataset.region === country) {
+            el.style.display = 'block';
+            shown = true;
+          }
+        });
+        if (!shown) {
+          const fallback = document.querySelector('.cc-region[data-region="default"]');
+          if (fallback) {
+            fallback.style.display = 'block';
+            const google = document.getElementById('googleLink');
+            if (google && data.country_name) {
+              google.href = `https://www.google.com/search?q=compare+bank+rates+${encodeURIComponent(data.country_name)}`;
+            }
+          }
+        }
+      });
+
     function calculateLTV() {
       const value = parseFloat(document.getElementById('ltvValue').value);
       const mortgage = parseFloat(document.getElementById('ltvMortgage').value);
