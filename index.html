@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CashCrunchers Tools</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 2em;
+      color: #0a0a0a;
+    }
+    .cc-card {
+      background: white;
+      padding: 2em;
+      max-width: 600px;
+      margin: 2em auto;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.05);
+    }
+    .cc-group { margin-top: 1.5em; }
+    .cc-group label { font-weight: 600; }
+    .cc-subtle { color: #555; font-size: 0.9em; margin-left: 0.5em; }
+    .cc-button {
+      background: #007AFF;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-top: 1.5em;
+      cursor: pointer;
+    }
+    .results {
+      display: none;
+      margin-top: 2em;
+      background: #e6f0ff;
+      padding: 1em;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- LTV Calculator -->
+  <div class="cc-card">
+    <h2>Loan-to-Value Calculator</h2>
+    <div class="cc-group">
+      <label>Estimated Property Value (€): <span class="cc-subtle" id="valueDisplay">€400,000</span></label>
+      <input type="range" id="ltvValue" min="50000" max="2000000" step="5000" value="400000" oninput="document.getElementById('valueDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+    </div>
+    <div class="cc-group">
+      <label>Remaining Mortgage (€): <span class="cc-subtle" id="mortgageDisplay">€250,000</span></label>
+      <input type="range" id="ltvMortgage" min="0" max="2000000" step="5000" value="250000" oninput="document.getElementById('mortgageDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+    </div>
+    <button onclick="calculateLTV()" class="cc-button">Calculate LTV</button>
+    <div class="results" id="ltvResults">
+      <p id="ltvRatio"></p>
+      <p id="ltvEquity"></p>
+    </div>
+  </div>
+
+  <!-- Overpayment Calculator -->
+  <div class="cc-card">
+    <h2>Mortgage Overpayment Calculator</h2>
+    <div class="cc-group">
+      <label>Mortgage Balance (€): <span class="cc-subtle" id="balanceDisplay">€250,000</span></label>
+      <input type="range" id="balance" min="50000" max="1000000" step="1000" value="250000" oninput="document.getElementById('balanceDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+    </div>
+    <div class="cc-group">
+      <label>Interest Rate (%): <span class="cc-subtle" id="rateDisplay">3.5%</span></label>
+      <input type="range" id="rate" min="1" max="10" step="0.1" value="3.5" oninput="document.getElementById('rateDisplay').innerText = this.value + '%'">
+    </div>
+    <div class="cc-group">
+      <label>Term Remaining (Years): <span class="cc-subtle" id="termDisplay">20</span></label>
+      <input type="range" id="term" min="5" max="35" step="1" value="20" oninput="document.getElementById('termDisplay').innerText = this.value">
+    </div>
+    <div class="cc-group">
+      <label>Monthly Overpayment (€): <span class="cc-subtle" id="overpayDisplay">€100</span></label>
+      <input type="range" id="overpay" min="0" max="2000" step="10" value="100" oninput="document.getElementById('overpayDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+    </div>
+    <button onclick="calculateOverpayment()" class="cc-button">Calculate</button>
+    <div class="results" id="resultsBox">
+      <p><strong>Time Saved:</strong><br><span id="timeSaved"></span></p>
+      <p><strong>Interest Saved:</strong><br>€<span id="interestSaved"></span></p>
+    </div>
+  </div>
+
+  <!-- Savings Goal Calculator -->
+  <div class="cc-card">
+    <h2>Savings Goal Calculator</h2>
+    <div class="cc-group">
+      <label>Savings Goal (€): <span class="cc-subtle" id="goalDisplay">€10,000</span></label>
+      <input type="range" id="goal" min="1000" max="100000" step="500" value="10000" oninput="document.getElementById('goalDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+    </div>
+    <div class="cc-group">
+      <label>Months to Save: <span class="cc-subtle" id="monthsDisplay">12</span></label>
+      <input type="range" id="months" min="1" max="120" step="1" value="12" oninput="document.getElementById('monthsDisplay').innerText = this.value">
+    </div>
+    <div class="cc-group">
+      <label>Expected APR (%): <span class="cc-subtle" id="aprDisplay">3.0%</span></label>
+      <input type="range" id="apr" min="0" max="10" step="0.1" value="3.0" oninput="document.getElementById('aprDisplay').innerText = this.value + '%'">
+    </div>
+    <button onclick="calculateSavings()" class="cc-button">Calculate</button>
+    <div class="results" id="resultsBoxSavings">
+      <p id="monthlyNeeded"></p>
+      <p id="totalContributed"></p>
+      <p id="interestEarned"></p>
+    </div>
+  </div>
+
+  <script>
+    function calculateLTV() {
+      const value = parseFloat(document.getElementById('ltvValue').value);
+      const mortgage = parseFloat(document.getElementById('ltvMortgage').value);
+      if (!value || mortgage < 0 || mortgage > value) return;
+      const ratio = (mortgage / value) * 100;
+      const equity = value - mortgage;
+      document.getElementById('ltvRatio').innerText = `Loan-to-Value Ratio: ${ratio.toFixed(2)}%`;
+      document.getElementById('ltvEquity').innerText = `Home Equity: €${equity.toLocaleString()}`;
+      document.getElementById('ltvResults').style.display = 'block';
+    }
+
+    function calculateOverpayment() {
+      const balance = parseFloat(document.getElementById('balance').value);
+      const rate = parseFloat(document.getElementById('rate').value) / 100 / 12;
+      const term = parseInt(document.getElementById('term').value);
+      const overpay = parseFloat(document.getElementById('overpay').value);
+      const months = term * 12;
+      const x = Math.pow(1 + rate, months);
+      const monthly = (balance * x * rate) / (x - 1);
+      const newMonthly = monthly + overpay;
+      let currentBalance = balance;
+      let monthsSaved = 0;
+      let interestSaved = 0;
+      for (let i = 0; i < months; i++) {
+        const interest = currentBalance * rate;
+        const principal = newMonthly - interest;
+        currentBalance -= principal;
+        interestSaved += interest;
+        if (currentBalance <= 0) {
+          monthsSaved = months - (i + 1);
+          break;
+        }
+      }
+      const savedTime = `${Math.floor(monthsSaved / 12)} years and ${monthsSaved % 12} months`;
+      const savedMoney = interestSaved.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('timeSaved').innerText = savedTime;
+      document.getElementById('interestSaved').innerText = savedMoney;
+      document.getElementById('resultsBox').style.display = 'block';
+    }
+
+    function calculateSavings() {
+      const goal = parseFloat(document.getElementById('goal').value);
+      const months = parseInt(document.getElementById('months').value);
+      const apr = parseFloat(document.getElementById('apr').value) / 100 / 12;
+      const monthly = goal * apr / (Math.pow(1 + apr, months) - 1);
+      const totalContributed = monthly * months;
+      const interestEarned = goal - totalContributed;
+      document.getElementById('monthlyNeeded').innerText = `You need to save €${monthly.toFixed(2)} per month.`;
+      document.getElementById('totalContributed').innerText = `Total contributed: €${totalContributed.toFixed(2)}`;
+      document.getElementById('interestEarned').innerText = `Interest earned: €${interestEarned.toFixed(2)}`;
+      document.getElementById('resultsBoxSavings').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
