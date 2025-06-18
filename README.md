@@ -5,35 +5,37 @@ A collection of simple, fast, mobile-friendly financial calculators designed to 
 ✅ Mortgage Overpayment  
 ✅ Loan-to-Value (LTV)  
 ✅ Savings Goals  
-✅ FIRE (Financial Independence / Retire Early) Calculator (coming soon)  
+✅ FIRE (Financial Independence / Retire Early) Calculator  
+✅ More calculators coming soon...
 
 ---
 
 ## 🎯 Purpose
 
-- Deliver real financial insights with minimal friction — no logins, no ads, no spam
-- Support SEO and organic traffic via clear, useful calculators
-- Monetize ethically via affiliate/referral links to **genuinely good providers**
-- Build long-term trust and value (goal: recurring visitors & subscribers)
+- Deliver real financial insights with minimal friction — no logins, no ads, no spam  
+- Grow into a trusted hub for useful financial calculators across mortgages, savings, pensions, investing and retirement  
+- Support SEO and organic traffic through clear, accurate tools  
+- Monetize ethically via affiliate/referral links to genuinely good providers  
+- Build long-term trust and value — goal: returning visitors and subscribers
 
 ---
 
 ## 💻 Current Stack
 
 - Static HTML + CSS + vanilla JS  
-- Hosted on GitHub Pages (`https://cruncher.money`)  
+- Hosted on GitHub Pages (https://cruncher.money)  
 - No frameworks (React, Vue, etc) — intentionally lightweight  
 - No build tools required  
 - CSS and JS inline for portability & fast load  
-- GA4 active: `G-6Q7ZTXJBC2`
+- GA4 active: G-6Q7ZTXJBC2  
 
 ---
 
 ## 🚀 Incremental Vibe-Coding Goals
 
-> I want to add and improve in **small, modular steps** — no big rewrites.  
-> 
-> The project philosophy is: **ship and learn, week by week**.
+This site will grow in small, modular steps — no big rewrites.
+
+The project philosophy is: **ship and learn, week by week**.
 
 ---
 
@@ -43,7 +45,7 @@ You are an expert front-end dev and SEO helping me improve my personal finance s
 
 The site uses only HTML + JS (no frameworks), with fast, mobile-friendly calculators.
 
-Each update should be **small and modular** so I can maintain it easily on GitHub — no big rewrites.
+Each update should be small and modular so I can maintain it easily on GitHub — no big rewrites.
 
 Give me:
 
@@ -56,7 +58,7 @@ Give me:
 
 I want to add or update:
 
-[Insert what I want here, e.g.]:
+[Insert what I want here, e.g.]:  
 ✅ Add FIRE calculator (bottom of index.html)  
 ✅ Add disclaimer text  
 ✅ Add Schema markup  
@@ -70,12 +72,12 @@ Important: This is **NOT financial advice** — I want a disclaimer under every 
 
 ## 📋 Roadmap
 
-- Phase 1 (done): add disclaimer, fixed-rate warning, regional CTAs on all calculators
-- Phase 2: add FIRE calculator
-- Phase 3: currency detection + override
-- Phase 4: charts & visual enhancements (Chart.js)
-- Phase 5: multi-page site with calculators index
-- Phase 6: email capture or lead magnet
+- Phase 1 (done): add disclaimer, fixed-rate warning, regional CTAs on all calculators  
+- Phase 2 (in progress): add FIRE calculator  
+- Phase 3: currency detection + override  
+- Phase 4: charts & visual enhancements (Chart.js)  
+- Phase 5: multi-page site with calculators index  
+- Phase 6: email capture or lead magnet  
 
 ---
 
@@ -87,7 +89,11 @@ All rights reserved.
 
 ## 🚀 Notes for AI Assistants
 
-- Do not suggest React/Next.js/Bootstrap unless explicitly asked
-- Do not rewrite whole site — suggest modular updates
-- Match current style: readable, performant HTML + JS
-- CSS should remain inli
+- Do not suggest React/Next.js/Bootstrap unless explicitly asked  
+- Do not rewrite whole site — suggest modular updates  
+- Match current style: readable, performant HTML + JS  
+- CSS should remain inline for now (in <head>)  
+- Must work on GitHub Pages (no server)
+
+---
+
