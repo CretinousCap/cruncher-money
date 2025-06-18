@@ -53,6 +53,7 @@
     .cc-group { margin-top: 1.5em; }
     .cc-group label { font-weight: 600; }
     .cc-subtle { color: #555; font-size: 0.9em; margin-left: 0.5em; }
+    .curr-symbol { margin-right: 0.15em; }
     .cc-button {
       background: #007AFF;
       color: white;
@@ -63,6 +64,8 @@
       font-weight: 600;
     }
     .results { display: none; margin-top: 1em; }
+    input[type=range]{ width:100%; box-sizing:border-box; }
+    .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
     .cc-region { display: none; margin-top: 1em; font-size: 0.95em; }
     .cc-region a { color: #007AFF; text-decoration: none; font-weight: bold; }
     .cc-overview { font-size: 0.95em; color: #333; margin-bottom: 1em; }
@@ -75,20 +78,20 @@
     <h2>FIRE Calculator</h2>
     <p class="cc-overview">Estimate how your savings and contributions can help you reach financial independence.</p>
     <div class="cc-group">
-      <label>Current Savings (<span class="cc-subtle" id="savingsDisplay">€50,000</span>)</label>
-      <input type="range" id="fireSavings" min="0" max="2000000" step="1000" value="50000" oninput="document.getElementById('savingsDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
+      <label>Current Savings (<span class="curr-symbol">€</span><span class="cc-subtle" id="savingsDisplay">50,000</span>)</label>
+      <input type="range" id="fireSavings" min="0" max="2000000" step="1000" value="50000" oninput="document.getElementById('savingsDisplay').innerText = parseInt(this.value).toLocaleString(); updateCurrencyDisplays()">
     </div>
     <div class="cc-group">
-      <label>Monthly Contribution (<span class="cc-subtle" id="contribDisplay">€1,000</span>)</label>
-      <input type="range" id="fireContrib" min="0" max="20000" step="100" value="1000" oninput="document.getElementById('contribDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
+      <label>Monthly Contribution (<span class="curr-symbol">€</span><span class="cc-subtle" id="contribDisplay">1,000</span>)</label>
+      <input type="range" id="fireContrib" min="0" max="20000" step="100" value="1000" oninput="document.getElementById('contribDisplay').innerText = parseInt(this.value).toLocaleString(); updateCurrencyDisplays()">
     </div>
     <div class="cc-group">
       <label>Expected Annual Return % (<span class="cc-subtle" id="returnDisplay">6%</span>)</label>
       <input type="range" id="fireReturn" min="1" max="15" step="0.1" value="6" oninput="document.getElementById('returnDisplay').innerText = this.value + '%'">
     </div>
     <div class="cc-group">
-      <label>Target Annual Expenses (<span class="cc-subtle" id="expenseDisplay">€40,000</span>)</label>
-      <input type="range" id="fireExpenses" min="10000" max="200000" step="1000" value="40000" oninput="document.getElementById('expenseDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
+      <label>Target Annual Expenses (<span class="curr-symbol">€</span><span class="cc-subtle" id="expenseDisplay">40,000</span>)</label>
+      <input type="range" id="fireExpenses" min="10000" max="200000" step="1000" value="40000" oninput="document.getElementById('expenseDisplay').innerText = parseInt(this.value).toLocaleString(); updateCurrencyDisplays()">
     </div>
     <button onclick="calculateFire()" class="cc-button">Calculate</button>
     <div class="results" id="fireResults">
@@ -170,6 +173,7 @@
     })
     .catch(() => {
       showCTA('fire', 'ctaFire', 'default', 'your region');
+      updateCurrencyDisplays();
     });
 
   function showCTA(type, id, code, name) {
@@ -194,9 +198,10 @@
   }
 
   function updateCurrencyDisplays() {
-    document.getElementById('savingsDisplay').innerText = currSymbol + parseInt(document.getElementById('fireSavings').value).toLocaleString();
-    document.getElementById('contribDisplay').innerText = currSymbol + parseInt(document.getElementById('fireContrib').value).toLocaleString();
-    document.getElementById('expenseDisplay').innerText = currSymbol + parseInt(document.getElementById('fireExpenses').value).toLocaleString();
+    document.querySelectorAll('.curr-symbol').forEach(el=>el.innerText = currSymbol);
+    document.getElementById('savingsDisplay').innerText = parseInt(document.getElementById('fireSavings').value).toLocaleString();
+    document.getElementById('contribDisplay').innerText = parseInt(document.getElementById('fireContrib').value).toLocaleString();
+    document.getElementById('expenseDisplay').innerText = parseInt(document.getElementById('fireExpenses').value).toLocaleString();
   }
 
   function calculateFire() {
