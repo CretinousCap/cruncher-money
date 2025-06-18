@@ -78,15 +78,7 @@
     <div class="results" id="ltvResults">
       <p id="ltvRatio"></p>
       <p id="ltvEquity"></p>
-      <div class="cc-region" data-region="IE"><a href="https://switcher.ie/mortgages" target="_blank">🇮🇪 Compare Irish mortgage offers</a></div>
-      <div class="cc-region" data-region="GB"><a href="https://moneyfacts.co.uk/mortgages" target="_blank">🇬🇧 Find UK mortgage switch deals</a></div>
-      <div class="cc-region" data-region="US"><a href="https://www.nerdwallet.com/mortgages" target="_blank">🇺🇸 Check current U.S. mortgage rates</a></div>
-      <div class="cc-region" data-region="CA"><a href="https://www.ratehub.ca/mortgage-rates" target="_blank">🇨🇦 See Canadian mortgage offers</a></div>
-      <div class="cc-region" data-region="AU"><a href="https://mozo.com.au/home-loans" target="_blank">🇦🇺 Compare Australian mortgage rates</a></div>
-      <div class="cc-region" data-region="IN"><a href="https://www.bankbazaar.com/" target="_blank">🇮🇳 Explore Indian banking offers</a></div>
-      <div class="cc-region" data-region="FR"><a href="https://www.meilleurtaux.com/" target="_blank">🇫🇷 Compare French mortgage options</a></div>
-      <div class="cc-region" data-region="DE"><a href="https://www.check24.de/" target="_blank">🇩🇪 Compare German mortgage rates</a></div>
-      <div class="cc-region" data-region="default"><p>🌍 We don’t yet have a partner for your region. Try searching: <a class="googleLink" href="#" target="_blank">top bank rates in your country</a>.</p></div>
+      <div class="cc-region" id="ctaLTV"></div>
     </div>
   </div>
 
@@ -112,15 +104,7 @@
     <div class="results" id="resultsBox">
       <p><strong>Time Saved:</strong><br><span id="timeSaved"></span></p>
       <p><strong>Interest Saved:</strong><br><span id="interestSaved"></span></p>
-      <div class="cc-region" data-region="IE"><a href="https://switcher.ie/mortgages" target="_blank">🇮🇪 Compare Irish mortgage offers</a></div>
-      <div class="cc-region" data-region="GB"><a href="https://moneyfacts.co.uk/mortgages" target="_blank">🇬🇧 Find UK mortgage switch deals</a></div>
-      <div class="cc-region" data-region="US"><a href="https://www.nerdwallet.com/mortgages" target="_blank">🇺🇸 Check current U.S. mortgage rates</a></div>
-      <div class="cc-region" data-region="CA"><a href="https://www.ratehub.ca/mortgage-rates" target="_blank">🇨🇦 See Canadian mortgage offers</a></div>
-      <div class="cc-region" data-region="AU"><a href="https://mozo.com.au/home-loans" target="_blank">🇦🇺 Compare Australian mortgage rates</a></div>
-      <div class="cc-region" data-region="IN"><a href="https://www.bankbazaar.com/" target="_blank">🇮🇳 Explore Indian banking offers</a></div>
-      <div class="cc-region" data-region="FR"><a href="https://www.meilleurtaux.com/" target="_blank">🇫🇷 Compare French mortgage options</a></div>
-      <div class="cc-region" data-region="DE"><a href="https://www.check24.de/" target="_blank">🇩🇪 Compare German mortgage rates</a></div>
-      <div class="cc-region" data-region="default"><p>🌍 We don’t yet have a partner for your region. Try searching: <a class="googleLink" href="#" target="_blank">top bank rates in your country</a>.</p></div>
+      <div class="cc-region" id="ctaOverpay"></div>
     </div>
   </div>
 
@@ -143,15 +127,7 @@
       <p id="monthlyNeeded"></p>
       <p id="totalContributed"></p>
       <p id="interestEarned"></p>
-      <div class="cc-region" data-region="IE"><a href="https://switcher.ie/mortgages" target="_blank">🇮🇪 Compare Irish mortgage offers</a></div>
-      <div class="cc-region" data-region="GB"><a href="https://moneyfacts.co.uk/mortgages" target="_blank">🇬🇧 Find UK mortgage switch deals</a></div>
-      <div class="cc-region" data-region="US"><a href="https://www.nerdwallet.com/mortgages" target="_blank">🇺🇸 Check current U.S. mortgage rates</a></div>
-      <div class="cc-region" data-region="CA"><a href="https://www.ratehub.ca/mortgage-rates" target="_blank">🇨🇦 See Canadian mortgage offers</a></div>
-      <div class="cc-region" data-region="AU"><a href="https://mozo.com.au/home-loans" target="_blank">🇦🇺 Compare Australian mortgage rates</a></div>
-      <div class="cc-region" data-region="IN"><a href="https://www.bankbazaar.com/" target="_blank">🇮🇳 Explore Indian banking offers</a></div>
-      <div class="cc-region" data-region="FR"><a href="https://www.meilleurtaux.com/" target="_blank">🇫🇷 Compare French mortgage options</a></div>
-      <div class="cc-region" data-region="DE"><a href="https://www.check24.de/" target="_blank">🇩🇪 Compare German mortgage rates</a></div>
-      <div class="cc-region" data-region="default"><p>🌍 We don’t yet have a partner for your region. Try searching: <a class="googleLink" href="#" target="_blank">top bank rates in your country</a>.</p></div>
+        <div class="cc-region" id="ctaSavings"></div>
     </div>
   </div>
 
@@ -168,38 +144,93 @@
       default: '€'
     };
 
+    const ctaLinks = {
+      IE: { flag: '🇮🇪', affiliate: true,
+        mortgage: 'https://switcher.ie/mortgages',
+        savings: 'https://bonkers.ie/compare-savings-accounts/',
+        fire: 'https://switcher.ie/investments/',
+        pension: '' },
+      GB: { flag: '🇬🇧', affiliate: true,
+        mortgage: 'https://moneyfacts.co.uk/mortgages',
+        savings: 'https://moneyfacts.co.uk/savings-accounts/',
+        fire: 'https://moneysavingexpert.com/savings/investment-beginners/',
+        pension: '' },
+      US: { flag: '🇺🇸', affiliate: true,
+        mortgage: 'https://nerdwallet.com/mortgages',
+        savings: 'https://nerdwallet.com/best/banking/savings-accounts',
+        fire: 'https://nerdwallet.com/investing/retirement/fire-movement',
+        pension: '' },
+      CA: { flag: '🇨🇦', affiliate: true,
+        mortgage: 'https://ratehub.ca/mortgage-rates',
+        savings: 'https://ratehub.ca/high-interest-savings-accounts',
+        fire: null, pension: '' },
+      AU: { flag: '🇦🇺', affiliate: true,
+        mortgage: 'https://mozo.com.au/home-loans',
+        savings: 'https://mozo.com.au/savings-accounts',
+        fire: null, pension: '' },
+      FR: { flag: '🇫🇷', affiliate: false,
+        mortgage: 'https://meilleurtaux.com/',
+        savings: 'https://lelynx.fr/banque/comparateur/livret-epargne/',
+        fire: null, pension: '' },
+      DE: { flag: '🇩🇪', affiliate: false,
+        mortgage: 'https://check24.de/',
+        savings: 'https://check24.de/tagesgeld/',
+        fire: null, pension: '' },
+      IN: { flag: '🇮🇳', affiliate: false,
+        mortgage: 'https://bankbazaar.com/home-loan.html',
+        savings: 'https://bankbazaar.com/savings-account.html',
+        fire: null, pension: '' },
+      default: { flag: '🌍', affiliate: false,
+        mortgage: 'https://www.google.com/search?q=compare+mortgage+rates+${country_name}',
+        savings: 'https://www.google.com/search?q=best+savings+accounts+${country_name}',
+        fire: 'https://www.google.com/search?q=fire+movement+${country_name}',
+        pension: '' }
+    };
+
     let currSymbol = '€';
 
     fetch('https://ipapi.co/json/')
       .then(res => res.json())
       .then(data => {
         const country = data.country_code;
+        const name = data.country_name || 'your region';
         currSymbol = currencySymbol[country] || currencySymbol.default;
 
-        document.querySelectorAll('.results').forEach(box => {
-          const regions = box.querySelectorAll('.cc-region');
-          let found = false;
-          regions.forEach(el => {
-            if (el.dataset.region === country) {
-              el.style.display = 'block';
-              found = true;
-            }
-          });
-          if (!found) {
-            const fallback = box.querySelector('.cc-region[data-region="default"]');
-            if (fallback) {
-              fallback.style.display = 'block';
-              fallback.querySelectorAll('.googleLink').forEach(link => {
-                if (data.country_name) {
-                  link.href = `https://www.google.com/search?q=compare+bank+rates+${encodeURIComponent(data.country_name)}`;
-                }
-              });
-            }
-          }
-        });
+        showCTA('mortgage', 'ctaLTV', country, name);
+        showCTA('mortgage', 'ctaOverpay', country, name);
+        showCTA('savings', 'ctaSavings', country, name);
 
         updateCurrencyDisplays();
+      })
+      .catch(() => {
+        showCTA('mortgage', 'ctaLTV', 'default', 'your region');
+        showCTA('mortgage', 'ctaOverpay', 'default', 'your region');
+        showCTA('savings', 'ctaSavings', 'default', 'your region');
       });
+
+    function showCTA(type, id, code, name) {
+      const data = ctaLinks[code] || ctaLinks.default;
+      let url = data[type];
+      let flag = data.flag;
+      if (!url) {
+        url = ctaLinks.default[type].replace('${country_name}', encodeURIComponent(name));
+        flag = ctaLinks.default.flag;
+      } else {
+        url = url.replace('${country_name}', encodeURIComponent(name));
+      }
+      if (!url) return;
+      const el = document.getElementById(id);
+      if (el) {
+        const textMap = {
+          mortgage: `Compare ${name} mortgage offers`,
+          savings: `Explore ${name} savings rates`,
+          fire: `Learn about FIRE in ${name}`,
+          pension: `Explore ${name} pension options`
+        };
+        el.innerHTML = `<a href="${url}" target="_blank">${flag} ${textMap[type]}</a>`;
+        el.style.display = 'block';
+      }
+    }
 
     function updateCurrencyDisplays() {
       document.getElementById('valueDisplay').innerText = currSymbol + parseInt(document.getElementById('ltvValue').value).toLocaleString();
