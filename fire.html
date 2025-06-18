@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIRE Calculator - Cruncher.Money</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6Q7ZTXJBC2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6Q7ZTXJBC2');
+
+    document.body?.addEventListener('click', function (e) {
+      const link = e.target.closest('a');
+      if (link && link.href && link.hostname !== location.hostname && window.gtag) {
+        gtag('event', 'click', {
+          event_category: 'outbound',
+          event_label: link.href
+        });
+      }
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 2em;
+      color: #0a0a0a;
+    }
+    .cc-card {
+      background: white;
+      padding: 2em;
+      max-width: 600px;
+      margin: 2em auto;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.05);
+    }
+    .cc-group { margin-top: 1.5em; }
+    .cc-group label { font-weight: 600; }
+    .cc-subtle { color: #555; font-size: 0.9em; margin-left: 0.5em; }
+    .cc-button {
+      background: #007AFF;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .results { display: none; margin-top: 1em; }
+    .cc-region { display: none; margin-top: 1em; font-size: 0.95em; }
+    .cc-region a { color: #007AFF; text-decoration: none; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="cc-card">
+    <h2>FIRE Calculator</h2>
+    <div class="cc-group">
+      <label>Current Savings (<span class="cc-subtle" id="savingsDisplay">€50,000</span>)</label>
+      <input type="range" id="fireSavings" min="0" max="2000000" step="1000" value="50000" oninput="document.getElementById('savingsDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
+    </div>
+    <div class="cc-group">
+      <label>Monthly Contribution (<span class="cc-subtle" id="contribDisplay">€1,000</span>)</label>
+      <input type="range" id="fireContrib" min="0" max="20000" step="100" value="1000" oninput="document.getElementById('contribDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
+    </div>
+    <div class="cc-group">
+      <label>Expected Annual Return % (<span class="cc-subtle" id="returnDisplay">6%</span>)</label>
+      <input type="range" id="fireReturn" min="1" max="15" step="0.1" value="6" oninput="document.getElementById('returnDisplay').innerText = this.value + '%'">
+    </div>
+    <div class="cc-group">
+      <label>Target Annual Expenses (<span class="cc-subtle" id="expenseDisplay">€40,000</span>)</label>
+      <input type="range" id="fireExpenses" min="10000" max="200000" step="1000" value="40000" oninput="document.getElementById('expenseDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
+    </div>
+    <button onclick="calculateFire()" class="cc-button">Calculate</button>
+    <div class="results" id="fireResults">
+      <p id="yearsToFire"></p>
+      <p id="fireValue"></p>
+      <canvas id="fireChart" width="400" height="200"></canvas>
+      <div class="cc-region" id="ctaFire"></div>
+    </div>
+  </div>
+
+<script>
+  const currencySymbol = {
+    IE: '€',
+    GB: '£',
+    US: '$',
+    CA: '$',
+    AU: '$',
+    IN: '₹',
+    FR: '€',
+    DE: '€',
+    default: '€'
+  };
+
+  const ctaLinks = {
+    IE: { flag: '🇮🇪', affiliate: true,
+      mortgage: 'https://switcher.ie/mortgages',
+      savings: 'https://bonkers.ie/compare-savings-accounts/',
+      fire: 'https://switcher.ie/investments/',
+      pension: '' },
+    GB: { flag: '🇬🇧', affiliate: true,
+      mortgage: 'https://moneyfacts.co.uk/mortgages',
+      savings: 'https://moneyfacts.co.uk/savings-accounts/',
+      fire: 'https://moneysavingexpert.com/savings/investment-beginners/',
+      pension: '' },
+    US: { flag: '🇺🇸', affiliate: true,
+      mortgage: 'https://nerdwallet.com/mortgages',
+      savings: 'https://nerdwallet.com/best/banking/savings-accounts',
+      fire: 'https://nerdwallet.com/investing/retirement/fire-movement',
+      pension: '' },
+    CA: { flag: '🇨🇦', affiliate: true,
+      mortgage: 'https://ratehub.ca/mortgage-rates',
+      savings: 'https://ratehub.ca/high-interest-savings-accounts',
+      fire: null, pension: '' },
+    AU: { flag: '🇦🇺', affiliate: true,
+      mortgage: 'https://mozo.com.au/home-loans',
+      savings: 'https://mozo.com.au/savings-accounts',
+      fire: null, pension: '' },
+    FR: { flag: '🇫🇷', affiliate: false,
+      mortgage: 'https://meilleurtaux.com/',
+      savings: 'https://lelynx.fr/banque/comparateur/livret-epargne/',
+      fire: null, pension: '' },
+    DE: { flag: '🇩🇪', affiliate: false,
+      mortgage: 'https://check24.de/',
+      savings: 'https://check24.de/tagesgeld/',
+      fire: null, pension: '' },
+    IN: { flag: '🇮🇳', affiliate: false,
+      mortgage: 'https://bankbazaar.com/home-loan.html',
+      savings: 'https://bankbazaar.com/savings-account.html',
+      fire: null, pension: '' },
+    default: { flag: '🌍', affiliate: false,
+      mortgage: 'https://www.google.com/search?q=compare+mortgage+rates+${country_name}',
+      savings: 'https://www.google.com/search?q=best+savings+accounts+${country_name}',
+      fire: 'https://www.google.com/search?q=fire+movement+${country_name}',
+      pension: '' }
+  };
+
+  let currSymbol = '€';
+  let fireChart;
+
+  fetch('https://ipapi.co/json/')
+    .then(res => res.json())
+    .then(data => {
+      const country = data.country_code;
+      const name = data.country_name || 'your region';
+      currSymbol = currencySymbol[country] || currencySymbol.default;
+
+      showCTA('fire', 'ctaFire', country, name);
+      updateCurrencyDisplays();
+    })
+    .catch(() => {
+      showCTA('fire', 'ctaFire', 'default', 'your region');
+    });
+
+  function showCTA(type, id, code, name) {
+    const data = ctaLinks[code] || ctaLinks.default;
+    let url = data[type];
+    let flag = data.flag;
+    if (!url) {
+      url = ctaLinks.default[type].replace('${country_name}', encodeURIComponent(name));
+      flag = ctaLinks.default.flag;
+    } else {
+      url = url.replace('${country_name}', encodeURIComponent(name));
+    }
+    if (!url) return;
+    const el = document.getElementById(id);
+    if (el) {
+      const textMap = {
+        fire: `Learn about FIRE in ${name}`
+      };
+      el.innerHTML = `<a href="${url}" target="_blank">${flag} ${textMap[type]}</a>`;
+      el.style.display = 'block';
+    }
+  }
+
+  function updateCurrencyDisplays() {
+    document.getElementById('savingsDisplay').innerText = currSymbol + parseInt(document.getElementById('fireSavings').value).toLocaleString();
+    document.getElementById('contribDisplay').innerText = currSymbol + parseInt(document.getElementById('fireContrib').value).toLocaleString();
+    document.getElementById('expenseDisplay').innerText = currSymbol + parseInt(document.getElementById('fireExpenses').value).toLocaleString();
+  }
+
+  function calculateFire() {
+    const savings = parseFloat(document.getElementById('fireSavings').value);
+    const monthly = parseFloat(document.getElementById('fireContrib').value);
+    const annual = parseFloat(document.getElementById('fireReturn').value) / 100;
+    const expenses = parseFloat(document.getElementById('fireExpenses').value);
+    const target = expenses * 25;
+    let balance = savings;
+    let months = 0;
+    const labels = [0];
+    const dataPoints = [balance];
+    while (balance < target && months < 1000) {
+      balance = balance * (1 + annual / 12) + monthly;
+      months++;
+      if (months % 12 === 0 || balance >= target) {
+        labels.push((months / 12).toFixed(1));
+        dataPoints.push(balance);
+      }
+    }
+    const years = months / 12;
+    document.getElementById('yearsToFire').innerText = `Years to FIRE: ${years.toFixed(1)}`;
+    document.getElementById('fireValue').innerText = `Projected portfolio at FIRE: ${currSymbol}${Math.round(balance).toLocaleString()}`;
+    document.getElementById('fireResults').style.display = 'block';
+
+    if (fireChart) fireChart.destroy();
+    const ctx = document.getElementById('fireChart').getContext('2d');
+    fireChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{ label: 'Portfolio', data: dataPoints, borderColor: '#007AFF', fill: false }]
+      },
+      options: {
+        scales: {
+          x: { title: { display: true, text: 'Years' } },
+          y: { title: { display: true, text: 'Value' } }
+        }
+      }
+    });
+  }
+</script>
+<footer style="font-size: 0.85em; color: #555; text-align: center; margin-top: 3em; padding-top: 2em; border-top: 1px solid #ddd;">
+  <p>⚠️ These calculators are for informational purposes only and do not constitute financial advice.</p>
+  <p>
+    <a href="/about.html">About</a> |
+    <a href="/disclaimer.html">Disclaimer</a> |
+    <a href="/">Home</a>
+  </p>
+  <p style="margin-top: 1em;">&copy; 2024 Cruncher.Money</p>
+</footer>
+</body>
+</html>
