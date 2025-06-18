@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Disclaimer - Cruncher.Money</title>
+  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+  <script>
+    window.addEventListener('load', function(){
+      window.cookieconsent.initialise({
+        palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
+        theme:'classic',
+        content:{message:'We use cookies to analyse site usage.',dismiss:'Accept',link:'Learn more',href:'/privacy.html'}
+      });
+    });
+  </script>
   <style>
     body {
       font-family: 'Inter', sans-serif;

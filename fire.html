@@ -4,21 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FIRE Calculator - Cruncher.Money</title>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6Q7ZTXJBC2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-6Q7ZTXJBC2');
-
-    document.body?.addEventListener('click', function (e) {
-      const link = e.target.closest('a');
-      if (link && link.href && link.hostname !== location.hostname && window.gtag) {
-        gtag('event', 'click', {
-          event_category: 'outbound',
-          event_label: link.href
-        });
-      }
+    function loadGA(){
+      const s=document.createElement('script');
+      s.async=true;
+      s.src='https://www.googletagmanager.com/gtag/js?id=G-6Q7ZTXJBC2';
+      document.head.appendChild(s);
+      window.dataLayer=window.dataLayer||[];
+      function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+      gtag('js', new Date());
+      gtag('config','G-6Q7ZTXJBC2');
+      document.body?.addEventListener('click',function(e){
+        const link=e.target.closest('a');
+        if(link&&link.href&&link.hostname!==location.hostname&&window.gtag){
+          gtag('event','click',{event_category:'outbound',event_label:link.href});
+        }
+      });
+    }
+    window.addEventListener('load',function(){
+      window.cookieconsent.initialise({
+        palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
+        theme:'classic',
+        content:{message:'We use cookies to analyse site usage.',dismiss:'Accept',link:'Learn more',href:'/privacy.html'},
+        onInitialise:function(status){ if(this.hasConsented()) loadGA(); },
+        onStatusChange:function(status){ if(this.hasConsented()) loadGA(); }
+      });
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -53,11 +65,15 @@
     .results { display: none; margin-top: 1em; }
     .cc-region { display: none; margin-top: 1em; font-size: 0.95em; }
     .cc-region a { color: #007AFF; text-decoration: none; font-weight: bold; }
+    .cc-overview { font-size: 0.95em; color: #333; margin-bottom: 1em; }
+    .cc-error { color: #d00; font-size: 0.9em; display: none; margin-top: 0.5em; }
   </style>
 </head>
 <body>
+  <p>This calculator helps you estimate when you could achieve Financial Independence (FIRE).  Adjust your savings, contributions, return rate, and target annual expenses — and see when you might reach your FIRE number.</p>
   <div class="cc-card">
     <h2>FIRE Calculator</h2>
+    <p class="cc-overview">Estimate how your savings and contributions can help you reach financial independence.</p>
     <div class="cc-group">
       <label>Current Savings (<span class="cc-subtle" id="savingsDisplay">€50,000</span>)</label>
       <input type="range" id="fireSavings" min="0" max="2000000" step="1000" value="50000" oninput="document.getElementById('savingsDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
