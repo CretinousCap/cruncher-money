@@ -68,11 +68,11 @@
     <h2>Loan-to-Value Calculator</h2>
     <div class="cc-group">
       <label>Estimated Property Value (€): <span class="cc-subtle" id="valueDisplay">€400,000</span></label>
-      <input type="range" id="ltvValue" min="50000" max="2000000" step="5000" value="400000" oninput="document.getElementById('valueDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+      <input type="range" id="ltvValue" min="50000" max="2000000" step="5000" value="400000" oninput="document.getElementById('valueDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
     </div>
     <div class="cc-group">
       <label>Remaining Mortgage (€): <span class="cc-subtle" id="mortgageDisplay">€250,000</span></label>
-      <input type="range" id="ltvMortgage" min="0" max="2000000" step="5000" value="250000" oninput="document.getElementById('mortgageDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+      <input type="range" id="ltvMortgage" min="0" max="2000000" step="5000" value="250000" oninput="document.getElementById('mortgageDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
     </div>
     <button onclick="calculateLTV()" class="cc-button">Calculate LTV</button>
     <div class="results" id="ltvResults">
@@ -86,7 +86,7 @@
       <div class="cc-region" data-region="IN"><a href="https://www.bankbazaar.com/" target="_blank">🇮🇳 Explore Indian banking offers</a></div>
       <div class="cc-region" data-region="FR"><a href="https://www.meilleurtaux.com/" target="_blank">🇫🇷 Compare French mortgage options</a></div>
       <div class="cc-region" data-region="DE"><a href="https://www.check24.de/" target="_blank">🇩🇪 Compare German mortgage rates</a></div>
-      <div class="cc-region" data-region="default"><p>🌍 We don’t yet have a partner for your region. Try searching: <a id="googleLink" href="#" target="_blank">top bank rates in your country</a>.</p></div>
+      <div class="cc-region" data-region="default"><p>🌍 We don’t yet have a partner for your region. Try searching: <a class="googleLink" href="#" target="_blank">top bank rates in your country</a>.</p></div>
     </div>
   </div>
 
@@ -94,7 +94,7 @@
     <h2>Mortgage Overpayment Calculator</h2>
     <div class="cc-group">
       <label>Mortgage Balance (€): <span class="cc-subtle" id="balanceDisplay">€250,000</span></label>
-      <input type="range" id="balance" min="50000" max="1000000" step="1000" value="250000" oninput="document.getElementById('balanceDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+      <input type="range" id="balance" min="50000" max="1000000" step="1000" value="250000" oninput="document.getElementById('balanceDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
     </div>
     <div class="cc-group">
       <label>Interest Rate (%): <span class="cc-subtle" id="rateDisplay">3.5%</span></label>
@@ -106,12 +106,21 @@
     </div>
     <div class="cc-group">
       <label>Monthly Overpayment (€): <span class="cc-subtle" id="overpayDisplay">€100</span></label>
-      <input type="range" id="overpay" min="0" max="2000" step="10" value="100" oninput="document.getElementById('overpayDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+      <input type="range" id="overpay" min="0" max="2000" step="10" value="100" oninput="document.getElementById('overpayDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
     </div>
     <button onclick="calculateOverpayment()" class="cc-button">Calculate</button>
     <div class="results" id="resultsBox">
       <p><strong>Time Saved:</strong><br><span id="timeSaved"></span></p>
-      <p><strong>Interest Saved:</strong><br>€<span id="interestSaved"></span></p>
+      <p><strong>Interest Saved:</strong><br><span id="interestSaved"></span></p>
+      <div class="cc-region" data-region="IE"><a href="https://switcher.ie/mortgages" target="_blank">🇮🇪 Compare Irish mortgage offers</a></div>
+      <div class="cc-region" data-region="GB"><a href="https://moneyfacts.co.uk/mortgages" target="_blank">🇬🇧 Find UK mortgage switch deals</a></div>
+      <div class="cc-region" data-region="US"><a href="https://www.nerdwallet.com/mortgages" target="_blank">🇺🇸 Check current U.S. mortgage rates</a></div>
+      <div class="cc-region" data-region="CA"><a href="https://www.ratehub.ca/mortgage-rates" target="_blank">🇨🇦 See Canadian mortgage offers</a></div>
+      <div class="cc-region" data-region="AU"><a href="https://mozo.com.au/home-loans" target="_blank">🇦🇺 Compare Australian mortgage rates</a></div>
+      <div class="cc-region" data-region="IN"><a href="https://www.bankbazaar.com/" target="_blank">🇮🇳 Explore Indian banking offers</a></div>
+      <div class="cc-region" data-region="FR"><a href="https://www.meilleurtaux.com/" target="_blank">🇫🇷 Compare French mortgage options</a></div>
+      <div class="cc-region" data-region="DE"><a href="https://www.check24.de/" target="_blank">🇩🇪 Compare German mortgage rates</a></div>
+      <div class="cc-region" data-region="default"><p>🌍 We don’t yet have a partner for your region. Try searching: <a class="googleLink" href="#" target="_blank">top bank rates in your country</a>.</p></div>
     </div>
   </div>
 
@@ -119,7 +128,7 @@
     <h2>Savings Goal Calculator</h2>
     <div class="cc-group">
       <label>Savings Goal (€): <span class="cc-subtle" id="goalDisplay">€10,000</span></label>
-      <input type="range" id="goal" min="1000" max="100000" step="500" value="10000" oninput="document.getElementById('goalDisplay').innerText = '€' + parseInt(this.value).toLocaleString()">
+      <input type="range" id="goal" min="1000" max="100000" step="500" value="10000" oninput="document.getElementById('goalDisplay').innerText = currSymbol + parseInt(this.value).toLocaleString()">
     </div>
     <div class="cc-group">
       <label>Months to Save: <span class="cc-subtle" id="monthsDisplay">12</span></label>
@@ -134,33 +143,71 @@
       <p id="monthlyNeeded"></p>
       <p id="totalContributed"></p>
       <p id="interestEarned"></p>
+      <div class="cc-region" data-region="IE"><a href="https://switcher.ie/mortgages" target="_blank">🇮🇪 Compare Irish mortgage offers</a></div>
+      <div class="cc-region" data-region="GB"><a href="https://moneyfacts.co.uk/mortgages" target="_blank">🇬🇧 Find UK mortgage switch deals</a></div>
+      <div class="cc-region" data-region="US"><a href="https://www.nerdwallet.com/mortgages" target="_blank">🇺🇸 Check current U.S. mortgage rates</a></div>
+      <div class="cc-region" data-region="CA"><a href="https://www.ratehub.ca/mortgage-rates" target="_blank">🇨🇦 See Canadian mortgage offers</a></div>
+      <div class="cc-region" data-region="AU"><a href="https://mozo.com.au/home-loans" target="_blank">🇦🇺 Compare Australian mortgage rates</a></div>
+      <div class="cc-region" data-region="IN"><a href="https://www.bankbazaar.com/" target="_blank">🇮🇳 Explore Indian banking offers</a></div>
+      <div class="cc-region" data-region="FR"><a href="https://www.meilleurtaux.com/" target="_blank">🇫🇷 Compare French mortgage options</a></div>
+      <div class="cc-region" data-region="DE"><a href="https://www.check24.de/" target="_blank">🇩🇪 Compare German mortgage rates</a></div>
+      <div class="cc-region" data-region="default"><p>🌍 We don’t yet have a partner for your region. Try searching: <a class="googleLink" href="#" target="_blank">top bank rates in your country</a>.</p></div>
     </div>
   </div>
 
   <script>
+    const currencySymbol = {
+      IE: '€',
+      GB: '£',
+      US: '$',
+      CA: '$',
+      AU: '$',
+      IN: '₹',
+      FR: '€',
+      DE: '€',
+      default: '€'
+    };
+
+    let currSymbol = '€';
+
     fetch('https://ipapi.co/json/')
       .then(res => res.json())
       .then(data => {
         const country = data.country_code;
-        const regionEls = document.querySelectorAll('.cc-region');
-        let shown = false;
-        regionEls.forEach(el => {
-          if (el.dataset.region === country) {
-            el.style.display = 'block';
-            shown = true;
-          }
-        });
-        if (!shown) {
-          const fallback = document.querySelector('.cc-region[data-region="default"]');
-          if (fallback) {
-            fallback.style.display = 'block';
-            const google = document.getElementById('googleLink');
-            if (google && data.country_name) {
-              google.href = `https://www.google.com/search?q=compare+bank+rates+${encodeURIComponent(data.country_name)}`;
+        currSymbol = currencySymbol[country] || currencySymbol.default;
+
+        document.querySelectorAll('.results').forEach(box => {
+          const regions = box.querySelectorAll('.cc-region');
+          let found = false;
+          regions.forEach(el => {
+            if (el.dataset.region === country) {
+              el.style.display = 'block';
+              found = true;
+            }
+          });
+          if (!found) {
+            const fallback = box.querySelector('.cc-region[data-region="default"]');
+            if (fallback) {
+              fallback.style.display = 'block';
+              fallback.querySelectorAll('.googleLink').forEach(link => {
+                if (data.country_name) {
+                  link.href = `https://www.google.com/search?q=compare+bank+rates+${encodeURIComponent(data.country_name)}`;
+                }
+              });
             }
           }
-        }
+        });
+
+        updateCurrencyDisplays();
       });
+
+    function updateCurrencyDisplays() {
+      document.getElementById('valueDisplay').innerText = currSymbol + parseInt(document.getElementById('ltvValue').value).toLocaleString();
+      document.getElementById('mortgageDisplay').innerText = currSymbol + parseInt(document.getElementById('ltvMortgage').value).toLocaleString();
+      document.getElementById('balanceDisplay').innerText = currSymbol + parseInt(document.getElementById('balance').value).toLocaleString();
+      document.getElementById('overpayDisplay').innerText = currSymbol + parseInt(document.getElementById('overpay').value).toLocaleString();
+      document.getElementById('goalDisplay').innerText = currSymbol + parseInt(document.getElementById('goal').value).toLocaleString();
+    }
 
     function calculateLTV() {
       const value = parseFloat(document.getElementById('ltvValue').value);
@@ -169,7 +216,7 @@
       const ratio = (mortgage / value) * 100;
       const equity = value - mortgage;
       document.getElementById('ltvRatio').innerText = `Loan-to-Value Ratio: ${ratio.toFixed(2)}%`;
-      document.getElementById('ltvEquity').innerText = `Home Equity: €${equity.toLocaleString()}`;
+      document.getElementById('ltvEquity').innerText = `Home Equity: ${currSymbol}${equity.toLocaleString()}`;
       document.getElementById('ltvResults').style.display = 'block';
     }
 
@@ -198,7 +245,7 @@
       const savedTime = `${Math.floor(monthsSaved / 12)} years and ${monthsSaved % 12} months`;
       const savedMoney = interestSaved.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       document.getElementById('timeSaved').innerText = savedTime;
-      document.getElementById('interestSaved').innerText = savedMoney;
+      document.getElementById('interestSaved').innerText = currSymbol + savedMoney;
       document.getElementById('resultsBox').style.display = 'block';
     }
 
@@ -209,9 +256,9 @@
       const monthly = goal * apr / (Math.pow(1 + apr, months) - 1);
       const totalContributed = monthly * months;
       const interestEarned = goal - totalContributed;
-      document.getElementById('monthlyNeeded').innerText = `You need to save €${monthly.toFixed(2)} per month.`;
-      document.getElementById('totalContributed').innerText = `Total contributed: €${totalContributed.toFixed(2)}`;
-      document.getElementById('interestEarned').innerText = `Interest earned: €${interestEarned.toFixed(2)}`;
+      document.getElementById('monthlyNeeded').innerText = `You need to save ${currSymbol}${monthly.toFixed(2)} per month.`;
+      document.getElementById('totalContributed').innerText = `Total contributed: ${currSymbol}${totalContributed.toFixed(2)}`;
+      document.getElementById('interestEarned').innerText = `Interest earned: ${currSymbol}${interestEarned.toFixed(2)}`;
       document.getElementById('resultsBoxSavings').style.display = 'block';
     }
   </script>
