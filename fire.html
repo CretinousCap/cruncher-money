@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FIRE Calculator - Cruncher.Money</title>
+  <title>FIRE Calculator — Cruncher.Money</title>
   <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
   <script>
@@ -72,8 +72,7 @@
     .cc-error { color: #d00; font-size: 0.9em; display: none; margin-top: 0.5em; }
   </style>
 </head>
-<body>
-  <p>This calculator helps you estimate when you could achieve Financial Independence (FIRE).  Adjust your savings, contributions, return rate, and target annual expenses — and see when you might reach your FIRE number.</p>
+  <p>Financial Independence, Retire Early (FIRE) is about lowering expenses and investing more so you can retire sooner. This calculator estimates when you might reach that goal.</p>
   <div class="cc-card">
     <h2>FIRE Calculator</h2>
     <p class="cc-overview">Estimate how your savings and contributions can help you reach financial independence.</p>
@@ -189,11 +188,12 @@
     if (!url) return;
     const el = document.getElementById(id);
     if (el) {
-      const textMap = {
-        fire: `Learn about FIRE in ${name}`
-      };
-      el.innerHTML = `<a href="${url}" target="_blank">${flag} ${textMap[type]}</a>`;
-      el.style.display = 'block';
+      const texts={en:{fire:`Learn about FIRE in ${name}`},de:{fire:`Mehr über FIRE in ${name} erfahren`},fr:{fire:`En savoir plus sur le FIRE en ${name}`}};
+      const langMap={DE:"de",FR:"fr"};
+      const lang=langMap[code]||"en";
+      const textMap=texts[lang]||texts.en;
+      el.innerHTML=`<a href="${url}" target="_blank">${flag} ${textMap[type]}</a>`;
+      el.style.display="block";
     }
   }
 
@@ -249,7 +249,7 @@
   <p>
     <a href="/about.html">About</a> |
     <a href="/disclaimer.html">Disclaimer</a> |
-    <a href="/">Home</a>
+    <a href="/all-calculators.html">All Calculators</a>
   </p>
   <p style="margin-top: 1em;">&copy; 2024 Cruncher.Money</p>
 </footer>
