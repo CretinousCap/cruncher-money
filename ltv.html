@@ -4,35 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loan-to-Value Calculator — Cruncher.Money</title>
+  <meta name="description" content="Estimate your current loan-to-value ratio and home equity.">
   <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-  <script>
-    function loadGA(){
-      const s=document.createElement('script');
-      s.async=true;
-      s.src='https://www.googletagmanager.com/gtag/js?id=G-6Q7ZTXJBC2';
-      document.head.appendChild(s);
-      window.dataLayer=window.dataLayer||[];
-      function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
-      gtag('js', new Date());
-      gtag('config','G-6Q7ZTXJBC2');
-      document.body?.addEventListener('click',function(e){
-        const link=e.target.closest('a');
-        if(link&&link.href&&link.hostname!==location.hostname&&window.gtag){
-          gtag('event','click',{event_category:'outbound',event_label:link.href});
-        }
-      });
-    }
-    window.addEventListener('load',function(){
-      window.cookieconsent.initialise({
-        palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
-        theme:'classic',
-        content:{message:'We use cookies to analyse site usage.',dismiss:'Accept',link:'Learn more',href:'/privacy.html'},
-        onInitialise:function(status){ if(this.hasConsented()) loadGA(); },
-        onStatusChange:function(status){ if(this.hasConsented()) loadGA(); }
-      });
-    });
-  </script>
+  <script src="common.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Calculator","name":"Loan-to-Value Calculator","description":"Estimate your current loan-to-value ratio and home equity.","url":"https://cruncher.money/ltv.html","creator":{"@type":"Organization","name":"Cruncher.Money"}}</script>
   <style>
     body{font-family:'Inter',sans-serif;background:#f4f7fb;margin:0;padding:2em;color:#0a0a0a;}
     .cc-card{background:#fff;padding:2em;max-width:600px;margin:2em auto;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.05);}
@@ -52,8 +28,8 @@
 </head>
 <body>
   <div class="cc-card">
-    <h2>Loan-to-Value Calculator</h2>
-    <p class="cc-overview">Estimate your loan-to-value ratio and home equity.</p>
+    <h1 id="pageTitle">Loan-to-Value Calculator</h1>
+    <p id="introText">Estimate your loan-to-value ratio and home equity.</p>
     <div class="cc-group">
       <label>Estimated Property Value (<span class="curr-symbol">€</span>): <span class="cc-subtle" id="valueDisplay">400,000</span></label>
       <input type="range" id="ltvValue" min="50000" max="2000000" step="5000" value="400000" oninput="document.getElementById('valueDisplay').innerText=parseInt(this.value).toLocaleString();updateCurrencyDisplays()">
@@ -68,24 +44,13 @@
       <p id="ltvRatio"></p>
       <p id="ltvEquity"></p>
       <div class="cc-region" id="ctaLTV"></div>
+      <p class="feedback">Was this helpful? <a href="https://tally.so/yourformid" target="_blank">Leave feedback</a></p>
     </div>
   </div>
 <script>
-const currencySymbol={IE:'€',GB:'£',US:'$',CA:'$',AU:'$',IN:'₹',FR:'€',DE:'€',default:'€'};
-const ctaLinks={
-  IE:{flag:'🇮🇪',affiliate:true,mortgage:'https://switcher.ie/mortgages',savings:'https://bonkers.ie/compare-savings-accounts/',fire:'https://switcher.ie/investments/',pension:''},
-  GB:{flag:'🇬🇧',affiliate:true,mortgage:'https://moneyfacts.co.uk/mortgages',savings:'https://moneyfacts.co.uk/savings-accounts/',fire:'https://moneysavingexpert.com/savings/investment-beginners/',pension:''},
-  US:{flag:'🇺🇸',affiliate:true,mortgage:'https://nerdwallet.com/mortgages',savings:'https://nerdwallet.com/best/banking/savings-accounts',fire:'https://nerdwallet.com/investing/retirement/fire-movement',pension:''},
-  CA:{flag:'🇨🇦',affiliate:true,mortgage:'https://ratehub.ca/mortgage-rates',savings:'https://ratehub.ca/high-interest-savings-accounts',fire:null,pension:''},
-  AU:{flag:'🇦🇺',affiliate:true,mortgage:'https://mozo.com.au/home-loans',savings:'https://mozo.com.au/savings-accounts',fire:null,pension:''},
-  FR:{flag:'🇫🇷',affiliate:false,mortgage:'https://meilleurtaux.com/',savings:'https://lelynx.fr/banque/comparateur/livret-epargne/',fire:null,pension:''},
-  DE:{flag:'🇩🇪',affiliate:false,mortgage:'https://check24.de/',savings:'https://check24.de/tagesgeld/',fire:null,pension:''},
-  IN:{flag:'🇮🇳',affiliate:false,mortgage:'https://bankbazaar.com/home-loan.html',savings:'https://bankbazaar.com/savings-account.html',fire:null,pension:''},
-  default:{flag:'🌍',affiliate:false,mortgage:'https://www.google.com/search?q=compare+mortgage+rates+${country_name}',savings:'https://www.google.com/search?q=best+savings+accounts+${country_name}',fire:'https://www.google.com/search?q=fire+movement+${country_name}',pension:''}
-};
 let currSymbol='€';
-fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{const c=d.country_code;const n=d.country_name||'your region';currSymbol=currencySymbol[c]||currencySymbol.default;showCTA('mortgage','ctaLTV',c,n);updateCurrencyDisplays();}).catch(()=>{showCTA('mortgage','ctaLTV','default','your region');updateCurrencyDisplays();});
-function showCTA(type,id,code,name){const data=ctaLinks[code]||ctaLinks.default;let url=data[type];let flag=data.flag;if(!url){url=ctaLinks.default[type].replace('${country_name}',encodeURIComponent(name));flag=ctaLinks.default.flag;}else{url=url.replace('${country_name}',encodeURIComponent(name));}if(!url)return;const texts={en:{savings:`Explore savings rates in ${name}`,mortgage:`Compare mortgage offers in ${name}`,fire:`Learn about FIRE in ${name}`,pension:`Explore pension options in ${name}`},de:{savings:`Sparzinsen in ${name} erkunden`,mortgage:`Hypothekenangebote in ${name} vergleichen`,fire:`Mehr über FIRE in ${name} erfahren`,pension:`Rentenoptionen in ${name} erkunden`},fr:{savings:`Découvrir les taux d'épargne en ${name}`,mortgage:`Comparer les offres de prêt immobilier en ${name}`,fire:`En savoir plus sur le FIRE en ${name}`,pension:`Explorer les options de retraite en ${name}`}};const langMap={DE:'de',FR:'fr'};const lang=langMap[code]||'en';const textMap=texts[lang]||texts.en;const el=document.getElementById(id);if(el){el.innerHTML=`<a href="${url}" target="_blank">${flag} ${textMap[type]}</a>`;el.style.display='block';}}
+startCookieConsent('LTV Calculator');
+fetchRegion().then(d=>{const c=d.country_code;const n=d.country_name||'your region';currSymbol=currencySymbol[c]||currencySymbol.default;applyPageText('ltv',c,n);showCTA('mortgage','ctaLTV',c,n);updateCurrencyDisplays();}).catch(()=>{applyPageText('ltv','default','your region');showCTA('mortgage','ctaLTV','default','your region');updateCurrencyDisplays();});
 function updateCurrencyDisplays(){document.querySelectorAll('.curr-symbol').forEach(el=>el.innerText=currSymbol);document.getElementById('valueDisplay').innerText=parseInt(document.getElementById('ltvValue').value).toLocaleString();document.getElementById('mortgageDisplay').innerText=parseInt(document.getElementById('ltvMortgage').value).toLocaleString();}
 function calculateLTV(){const value=parseFloat(document.getElementById('ltvValue').value);const mortgage=parseFloat(document.getElementById('ltvMortgage').value);const errEl=document.getElementById('ltvError');errEl.style.display='none';if(!value||mortgage<0||mortgage>value){errEl.innerText='Mortgage cannot exceed property value.';errEl.style.display='block';document.getElementById('ltvResults').style.display='none';return;}const ratio=(mortgage/value)*100;const equity=value-mortgage;document.getElementById('ltvRatio').innerText=`Loan-to-Value Ratio: ${ratio.toFixed(2)}%`;document.getElementById('ltvEquity').innerText=`Home Equity: ${currSymbol}${equity.toLocaleString()}`;document.getElementById('ltvResults').style.display='block';}
 </script>
