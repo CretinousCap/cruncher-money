@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Calculators — Cruncher.Money</title>
+  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+  <script>
+    window.addEventListener('load',function(){
+      window.cookieconsent.initialise({
+        palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
+        theme:'classic',
+        content:{message:'We use cookies to analyse site usage.',dismiss:'Accept',link:'Learn more',href:'/privacy.html'}
+      });
+    });
+  </script>
+  <style>
+    body{font-family:'Inter',sans-serif;background:#f4f7fb;margin:0;padding:2em;color:#0a0a0a;max-width:700px;margin:auto;}
+    h1{font-size:2em;margin-bottom:0.5em;}
+    h2{margin-top:1.5em;font-size:1.3em;}
+    ul{list-style:none;padding-left:0;}
+    li{margin:0.5em 0;}
+    a{color:#007AFF;text-decoration:none;}
+    .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
+  </style>
+</head>
+<body>
+  <h1>All Calculators</h1>
+  <h2>Homeowners</h2>
+  <ul>
+    <li><a href="/mortgage-overpayment.html">Mortgage Overpayment Calculator</a></li>
+    <li><a href="/ltv.html">Loan-to-Value Calculator</a></li>
+    <li><a href="/mortgage-switch.html">Mortgage Switch Calculator</a></li>
+  </ul>
+  <h2>Savers &amp; Investors</h2>
+  <ul>
+    <li><a href="/savings-goal.html">Savings Goal Calculator</a></li>
+    <li><a href="/fire.html">FIRE Calculator</a></li>
+    <li><a href="/pension.html">Pension Calculator</a></li>
+    <li><a href="/investment-return.html">Investment Return Calculator</a></li>
+  </ul>
+  <p><a href="/">&#8592; Back to home</a></p>
+</body>
+</html>

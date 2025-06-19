@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mortgage Overpayment Calculator — Cruncher.Money</title>
+  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+  <script>
+    function loadGA(){
+      const s=document.createElement('script');
+      s.async=true;
+      s.src='https://www.googletagmanager.com/gtag/js?id=G-6Q7ZTXJBC2';
+      document.head.appendChild(s);
+      window.dataLayer=window.dataLayer||[];
+      function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+      gtag('js', new Date());
+      gtag('config','G-6Q7ZTXJBC2');
+      document.body?.addEventListener('click',function(e){
+        const link=e.target.closest('a');
+        if(link&&link.href&&link.hostname!==location.hostname&&window.gtag){
+          gtag('event','click',{event_category:'outbound',event_label:link.href});
+        }
+      });
+    }
+    window.addEventListener('load',function(){
+      window.cookieconsent.initialise({
+        palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
+        theme:'classic',
+        content:{message:'We use cookies to analyse site usage.',dismiss:'Accept',link:'Learn more',href:'/privacy.html'},
+        onInitialise:function(status){ if(this.hasConsented()) loadGA(); },
+        onStatusChange:function(status){ if(this.hasConsented()) loadGA(); }
+      });
+    });
+  </script>
+  <style>
+    body{font-family:'Inter',sans-serif;background:#f4f7fb;margin:0;padding:2em;color:#0a0a0a;}
+    .cc-card{background:#fff;padding:2em;max-width:600px;margin:2em auto;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.05);}
+    .cc-group{margin-top:1.5em;}
+    .cc-group label{font-weight:600;}
+    .curr-symbol{margin-right:0.15em;}
+    .cc-subtle{color:#555;font-size:0.9em;margin-left:0.5em;}
+    .cc-error{color:#d00;font-size:0.9em;display:none;margin-top:0.5em;}
+    .cc-button{background:#007AFF;color:#fff;border:none;padding:12px;width:100%;border-radius:6px;font-weight:600;margin-top:1.5em;cursor:pointer;}
+    .results{display:none;margin-top:2em;background:#e6f0ff;padding:1em;border-radius:8px;}
+    .dual-input{display:flex;flex-direction:column;gap:0.5em;}
+    .dual-input input[type=number]{width:100%;padding:8px;font-size:1em;border:1px solid #ccc;border-radius:4px;}
+    .dual-input input[type=range]{width:100%;flex:1;}
+    @media(min-width:480px){.dual-input{flex-direction:row;align-items:center;}.dual-input input[type=number]{max-width:120px;}}
+    input[type=range]{width:100%;box-sizing:border-box;}
+    .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
+    .cc-region{display:none;margin-top:1em;font-size:0.95em;}
+    .cc-region a{color:#007AFF;text-decoration:none;font-weight:bold;}
+    .cc-overview{font-size:0.95em;color:#333;margin-bottom:1em;}
+  </style>
+</head>
+<body>
+  <div class="cc-card">
+    <h2>Mortgage Overpayment Calculator</h2>
+    <p class="cc-overview">See how extra payments shorten your term and cut interest.</p>
+    <div class="cc-group">
+      <label>Mortgage Balance (<span class="curr-symbol">€</span>): <span class="cc-subtle" id="balanceDisplay">250,000</span></label>
+      <input type="range" id="balance" min="50000" max="1000000" step="1000" value="250000" oninput="document.getElementById('balanceDisplay').innerText=parseInt(this.value).toLocaleString();updateCurrencyDisplays()">
+    </div>
+    <div class="cc-group">
+      <label>Interest Rate (%): <span class="cc-subtle" id="rateDisplay">3.5%</span></label>
+      <input type="range" id="rate" min="1" max="10" step="0.1" value="3.5" oninput="document.getElementById('rateDisplay').innerText=this.value+'%';">
+    </div>
+    <div class="cc-group">
+      <label>Term Remaining (Years): <span class="cc-subtle" id="termDisplay">20</span></label>
+      <input type="range" id="term" min="5" max="35" step="1" value="20" oninput="document.getElementById('termDisplay').innerText=this.value;">
+    </div>
+    <div class="cc-group">
+      <label>Monthly Overpayment (<span class="curr-symbol">€</span>): <span class="cc-subtle" id="overpayDisplay">100</span></label>
+      <div class="dual-input">
+        <input type="range" id="overpay" min="0" max="5000" step="10" value="100" oninput="syncOverpay(this.value)">
+        <input type="number" id="overpayNum" min="0" max="5000" step="10" value="100" oninput="syncOverpay(this.value)">
+      </div>
+    </div>
+    <button onclick="calculateOverpayment()" class="cc-button">Calculate</button>
+    <p id="overpayError" class="cc-error"></p>
+    <div class="results" id="resultsBox">
+      <p><strong>Time Saved:</strong><br><span id="timeSaved"></span></p>
+      <p><strong>Interest Saved:</strong><br><span id="interestSaved"></span></p>
+      <div class="cc-region" id="ctaOverpay"></div>
+    </div>
+  </div>
+<script>
+const currencySymbol={IE:'€',GB:'£',US:'$',CA:'$',AU:'$',IN:'₹',FR:'€',DE:'€',default:'€'};
+const ctaLinks={
+  IE:{flag:'🇮🇪',affiliate:true,mortgage:'https://switcher.ie/mortgages',savings:'https://bonkers.ie/compare-savings-accounts/',fire:'https://switcher.ie/investments/',pension:''},
+  GB:{flag:'🇬🇧',affiliate:true,mortgage:'https://moneyfacts.co.uk/mortgages',savings:'https://moneyfacts.co.uk/savings-accounts/',fire:'https://moneysavingexpert.com/savings/investment-beginners/',pension:''},
+  US:{flag:'🇺🇸',affiliate:true,mortgage:'https://nerdwallet.com/mortgages',savings:'https://nerdwallet.com/best/banking/savings-accounts',fire:'https://nerdwallet.com/investing/retirement/fire-movement',pension:''},
+  CA:{flag:'🇨🇦',affiliate:true,mortgage:'https://ratehub.ca/mortgage-rates',savings:'https://ratehub.ca/high-interest-savings-accounts',fire:null,pension:''},
+  AU:{flag:'🇦🇺',affiliate:true,mortgage:'https://mozo.com.au/home-loans',savings:'https://mozo.com.au/savings-accounts',fire:null,pension:''},
+  FR:{flag:'🇫🇷',affiliate:false,mortgage:'https://meilleurtaux.com/',savings:'https://lelynx.fr/banque/comparateur/livret-epargne/',fire:null,pension:''},
+  DE:{flag:'🇩🇪',affiliate:false,mortgage:'https://check24.de/',savings:'https://check24.de/tagesgeld/',fire:null,pension:''},
+  IN:{flag:'🇮🇳',affiliate:false,mortgage:'https://bankbazaar.com/home-loan.html',savings:'https://bankbazaar.com/savings-account.html',fire:null,pension:''},
+  default:{flag:'🌍',affiliate:false,mortgage:'https://www.google.com/search?q=compare+mortgage+rates+${country_name}',savings:'https://www.google.com/search?q=best+savings+accounts+${country_name}',fire:'https://www.google.com/search?q=fire+movement+${country_name}',pension:''}
+};
+let currSymbol='€';
+fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{const c=d.country_code;const n=d.country_name||'your region';currSymbol=currencySymbol[c]||currencySymbol.default;showCTA('mortgage','ctaOverpay',c,n);updateCurrencyDisplays();}).catch(()=>{showCTA('mortgage','ctaOverpay','default','your region');updateCurrencyDisplays();});
+function showCTA(type,id,code,name){const data=ctaLinks[code]||ctaLinks.default;let url=data[type];let flag=data.flag;if(!url){url=ctaLinks.default[type].replace('${country_name}',encodeURIComponent(name));flag=ctaLinks.default.flag;}else{url=url.replace('${country_name}',encodeURIComponent(name));}if(!url)return;const texts={en:{savings:`Explore savings rates in ${name}`,mortgage:`Compare mortgage offers in ${name}`,fire:`Learn about FIRE in ${name}`,pension:`Explore pension options in ${name}`},de:{savings:`Sparzinsen in ${name} erkunden`,mortgage:`Hypothekenangebote in ${name} vergleichen`,fire:`Mehr über FIRE in ${name} erfahren`,pension:`Rentenoptionen in ${name} erkunden`},fr:{savings:`Découvrir les taux d'épargne en ${name}`,mortgage:`Comparer les offres de prêt immobilier en ${name}`,fire:`En savoir plus sur le FIRE en ${name}`,pension:`Explorer les options de retraite en ${name}`}};const langMap={DE:'de',FR:'fr'};const lang=langMap[code]||'en';const textMap=texts[lang]||texts.en;const el=document.getElementById(id);if(el){el.innerHTML=`<a href="${url}" target="_blank">${flag} ${textMap[type]}</a>`;el.style.display='block';}}
+function updateCurrencyDisplays(){document.querySelectorAll('.curr-symbol').forEach(el=>el.innerText=currSymbol);document.getElementById('balanceDisplay').innerText=parseInt(document.getElementById('balance').value).toLocaleString();document.getElementById('overpayDisplay').innerText=parseInt(document.getElementById('overpay').value).toLocaleString();}
+function syncOverpay(val){document.getElementById('overpay').value=val;const num=document.getElementById('overpayNum');if(num)num.value=val;document.getElementById('overpayDisplay').innerText=parseInt(val).toLocaleString();updateCurrencyDisplays();}
+function calculateOverpayment(){const balance=parseFloat(document.getElementById('balance').value);const rate=parseFloat(document.getElementById('rate').value)/100/12;const term=parseInt(document.getElementById('term').value);const overpay=parseFloat(document.getElementById('overpay').value);const errEl=document.getElementById('overpayError');errEl.style.display='none';if(overpay<0||overpay>5000){errEl.innerText='Overpayment must be between 0 and 5000.';errEl.style.display='block';document.getElementById('resultsBox').style.display='none';return;}const months=term*12;const x=Math.pow(1+rate,months);const monthly=(balance*x*rate)/(x-1);const newMonthly=monthly+overpay;let currentBalance=balance;let monthsSaved=0;let interestSaved=0;for(let i=0;i<months;i++){const interest=currentBalance*rate;const principal=newMonthly-interest;currentBalance-=principal;interestSaved+=interest;if(currentBalance<=0){monthsSaved=months-(i+1);break;}}const savedTime=`${Math.floor(monthsSaved/12)} years and ${monthsSaved%12} months`;const savedMoney=interestSaved.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});document.getElementById('timeSaved').innerText=savedTime;document.getElementById('interestSaved').innerText=currSymbol+savedMoney;document.getElementById('resultsBox').style.display='block';}
+</script>
+<footer style="font-size:0.85em;color:#555;text-align:center;margin-top:3em;padding-top:2em;border-top:1px solid #ddd;">
+  <p>⚠️ These calculators are for informational purposes only and do not constitute financial advice.</p>
+  <p>
+    <a href="/all-calculators.html">All Calculators</a> |
+    <a href="/about.html">About</a> |
+    <a href="/disclaimer.html">Disclaimer</a>
+  </p>
+  <p style="margin-top:1em;">&copy; 2024 Cruncher.Money</p>
+</footer>
+</body>
+</html>
