@@ -5,28 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Investment Return Calculator — Cruncher.Money</title>
   <meta name="description" content="Calculate potential returns on your investments.">
+  <script src="common.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-  <script src="common.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Calculator","name":"Investment Return Calculator","description":"Calculate potential returns on your investments.","url":"https://cruncher.money/investment-return.html","creator":{"@type":"Organization","name":"Cruncher.Money"}}</script>
   <style>
     body{font-family:'Inter',sans-serif;background:#f4f7fb;margin:0;padding:2em;color:#0a0a0a;}
     .cc-card{background:#fff;padding:2em;max-width:600px;margin:2em auto;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.05);text-align:center;}
+    .cc-group{margin-top:1.5em;}
+    .cc-group label{font-weight:600;}
+    .curr-symbol{margin-right:0.15em;}
+    .cc-subtle{color:#555;font-size:0.9em;margin-left:0.5em;}
+    .cc-error{color:#d00;font-size:0.9em;display:none;margin-top:0.5em;}
+    .cc-button{background:#007AFF;color:#fff;border:none;padding:12px;width:100%;border-radius:6px;font-weight:600;margin-top:1.5em;cursor:pointer;}
+    .results{display:none;margin-top:2em;background:#e6f0ff;padding:1em;border-radius:8px;}
+    input[type=range]{width:100%;box-sizing:border-box;}
+    .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
     .cc-region{display:none;margin-top:1em;font-size:0.95em;}
     .cc-region a{color:#007AFF;text-decoration:none;font-weight:bold;}
-    .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
   </style>
 </head>
 <body>
   <div class="cc-card">
     <h1 id="pageTitle">Investment Return Calculator</h1>
-    <p id="introText">This calculator is coming soon.</p>
-    <div class="cc-region" id="ctaInvest"></div>
-    <p class="feedback">Was this helpful? <a href="https://tally.so/yourformid" target="_blank">Leave feedback</a></p>
+    <p id="introText">Calculate how your investments might grow over time.</p>
+    <div class="cc-group">
+      <label>Initial Investment (<span class="curr-symbol">€</span>): <span class="cc-subtle" id="investStartDisplay">10,000</span></label>
+      <input type="range" id="investStart" min="0" max="1000000" step="1000" value="10000" oninput="document.getElementById('investStartDisplay').innerText=parseInt(this.value).toLocaleString();updateCurrencyDisplays()">
+    </div>
+    <div class="cc-group">
+      <label>Monthly Contribution (<span class="curr-symbol">€</span>): <span class="cc-subtle" id="investContribDisplay">200</span></label>
+      <input type="range" id="investContrib" min="0" max="20000" step="100" value="200" oninput="document.getElementById('investContribDisplay').innerText=parseInt(this.value).toLocaleString();updateCurrencyDisplays()">
+    </div>
+    <div class="cc-group">
+      <label>Expected Annual Return % (<span class="cc-subtle" id="investReturnDisplay">5%</span>)</label>
+      <input type="range" id="investReturn" min="1" max="15" step="0.1" value="5" oninput="document.getElementById('investReturnDisplay').innerText=this.value+'%';">
+    </div>
+    <div class="cc-group">
+      <label>Years to Invest: <span class="cc-subtle" id="investYearsDisplay">15</span></label>
+      <input type="range" id="investYears" min="1" max="50" step="1" value="15" oninput="document.getElementById('investYearsDisplay').innerText=this.value;">
+    </div>
+    <button onclick="calculateInvest()" class="cc-button">Calculate</button>
+    <p id="investError" class="cc-error"></p>
+    <div class="results" id="investResults">
+      <p id="investFuture"></p>
+      <p id="investInterest"></p>
+      <div class="cc-region" id="ctaInvest"></div>
+      <p class="feedback">Was this helpful? <a href="https://tally.so/r/mOKja7" target="_blank">Leave feedback</a></p>
+    </div>
   </div>
 <script>
+let currSymbol='€';
 startCookieConsent('Investment Return');
-fetchRegion().then(d=>{const c=d.country_code;const n=d.country_name||'your region';applyPageText('investmentReturn',c,n);showCTA('savings','ctaInvest',c,n);}).catch(()=>{applyPageText('investmentReturn','default','your region');showCTA('savings','ctaInvest','default','your region');});
+fetchRegion().then(d=>{const c=d.country_code;const n=d.country_name||'your region';currSymbol=currencySymbol[c]||currencySymbol.default;applyPageText('investmentReturn',c,n);showCTA('savings','ctaInvest',c,n);updateCurrencyDisplays();}).catch(()=>{applyPageText('investmentReturn','default','your region');showCTA('savings','ctaInvest','default','your region');updateCurrencyDisplays();});
+
+function updateCurrencyDisplays(){
+  document.querySelectorAll('.curr-symbol').forEach(el=>el.innerText=currSymbol);
+  document.getElementById('investStartDisplay').innerText=parseInt(document.getElementById('investStart').value).toLocaleString();
+  document.getElementById('investContribDisplay').innerText=parseInt(document.getElementById('investContrib').value).toLocaleString();
+}
+
+function calculateInvest(){
+  const start=parseFloat(document.getElementById('investStart').value);
+  const contrib=parseFloat(document.getElementById('investContrib').value);
+  const rate=parseFloat(document.getElementById('investReturn').value)/100/12;
+  const years=parseInt(document.getElementById('investYears').value);
+  let balance=start; let contributed=start;
+  for(let i=0;i<years*12;i++){ balance=balance*(1+rate)+contrib; contributed+=contrib; }
+  const interest=balance-contributed;
+  document.getElementById('investFuture').innerText=`Future value: ${currSymbol}${Math.round(balance).toLocaleString()}`;
+  document.getElementById('investInterest').innerText=`Total interest earned: ${currSymbol}${interest.toFixed(2)}`;
+  document.getElementById('investResults').style.display='block';
+}
 </script>
 <footer style="font-size:0.85em;color:#555;text-align:center;margin-top:3em;padding-top:2em;border-top:1px solid #ddd;">
   <p>⚠️ These calculators are for informational purposes only and do not constitute financial advice.</p>

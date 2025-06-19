@@ -5,28 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pension Calculator — Cruncher.Money</title>
   <meta name="description" content="Check how much you may need for retirement.">
+  <script src="common.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-  <script src="common.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Calculator","name":"Pension Calculator","description":"Check how much you may need for retirement.","url":"https://cruncher.money/pension.html","creator":{"@type":"Organization","name":"Cruncher.Money"}}</script>
   <style>
     body{font-family:'Inter',sans-serif;background:#f4f7fb;margin:0;padding:2em;color:#0a0a0a;}
     .cc-card{background:#fff;padding:2em;max-width:600px;margin:2em auto;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.05);text-align:center;}
+    .cc-group{margin-top:1.5em;}
+    .cc-group label{font-weight:600;}
+    .curr-symbol{margin-right:0.15em;}
+    .cc-subtle{color:#555;font-size:0.9em;margin-left:0.5em;}
+    .cc-error{color:#d00;font-size:0.9em;display:none;margin-top:0.5em;}
+    .cc-button{background:#007AFF;color:#fff;border:none;padding:12px;width:100%;border-radius:6px;font-weight:600;margin-top:1.5em;cursor:pointer;}
+    .results{display:none;margin-top:2em;background:#e6f0ff;padding:1em;border-radius:8px;}
+    input[type=range]{width:100%;box-sizing:border-box;}
+    .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
     .cc-region{display:none;margin-top:1em;font-size:0.95em;}
     .cc-region a{color:#007AFF;text-decoration:none;font-weight:bold;}
-    .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
   </style>
 </head>
 <body>
   <div class="cc-card">
     <h1 id="pageTitle">Pension Calculator</h1>
-    <p id="introText">This calculator is coming soon.</p>
-    <div class="cc-region" id="ctaPension"></div>
-    <p class="feedback">Was this helpful? <a href="https://tally.so/yourformid" target="_blank">Leave feedback</a></p>
+    <p id="introText">Estimate how your pension could grow by retirement.</p>
+    <div class="cc-group">
+      <label>Current Pot (<span class="curr-symbol">€</span>): <span class="cc-subtle" id="pensionPotDisplay">20,000</span></label>
+      <input type="range" id="pensionPot" min="0" max="1000000" step="1000" value="20000" oninput="document.getElementById('pensionPotDisplay').innerText=parseInt(this.value).toLocaleString();updateCurrencyDisplays()">
+    </div>
+    <div class="cc-group">
+      <label>Monthly Contribution (<span class="curr-symbol">€</span>): <span class="cc-subtle" id="pensionContribDisplay">300</span></label>
+      <input type="range" id="pensionContrib" min="0" max="5000" step="50" value="300" oninput="document.getElementById('pensionContribDisplay').innerText=parseInt(this.value).toLocaleString();updateCurrencyDisplays()">
+    </div>
+    <div class="cc-group">
+      <label>Years to Retirement: <span class="cc-subtle" id="pensionYearsDisplay">30</span></label>
+      <input type="range" id="pensionYears" min="5" max="50" step="1" value="30" oninput="document.getElementById('pensionYearsDisplay').innerText=this.value;">
+    </div>
+    <div class="cc-group">
+      <label>Expected Annual Return % (<span class="cc-subtle" id="pensionReturnDisplay">5%</span>)</label>
+      <input type="range" id="pensionReturn" min="2" max="10" step="0.1" value="5" oninput="document.getElementById('pensionReturnDisplay').innerText=this.value+'%';">
+    </div>
+    <button onclick="calculatePension()" class="cc-button">Calculate</button>
+    <p id="pensionError" class="cc-error"></p>
+    <div class="results" id="pensionResults">
+      <p id="pensionFuture"></p>
+      <p id="pensionIncome"></p>
+      <div class="cc-region" id="ctaPension"></div>
+      <p class="feedback">Was this helpful? <a href="https://tally.so/r/mOKja7" target="_blank">Leave feedback</a></p>
+    </div>
   </div>
 <script>
+let currSymbol='€';
 startCookieConsent('Pension Calculator');
-fetchRegion().then(d=>{const c=d.country_code;const n=d.country_name||'your region';applyPageText('pension',c,n);showCTA('pension','ctaPension',c,n);}).catch(()=>{applyPageText('pension','default','your region');showCTA('pension','ctaPension','default','your region');});
+fetchRegion().then(d=>{const c=d.country_code;const n=d.country_name||'your region';currSymbol=currencySymbol[c]||currencySymbol.default;applyPageText('pension',c,n);showCTA('pension','ctaPension',c,n);updateCurrencyDisplays();}).catch(()=>{applyPageText('pension','default','your region');showCTA('pension','ctaPension','default','your region');updateCurrencyDisplays();});
+
+function updateCurrencyDisplays(){
+  document.querySelectorAll('.curr-symbol').forEach(el=>el.innerText=currSymbol);
+  document.getElementById('pensionPotDisplay').innerText=parseInt(document.getElementById('pensionPot').value).toLocaleString();
+  document.getElementById('pensionContribDisplay').innerText=parseInt(document.getElementById('pensionContrib').value).toLocaleString();
+}
+
+function calculatePension(){
+  const pot=parseFloat(document.getElementById('pensionPot').value);
+  const contrib=parseFloat(document.getElementById('pensionContrib').value);
+  const years=parseInt(document.getElementById('pensionYears').value);
+  const rate=parseFloat(document.getElementById('pensionReturn').value)/100/12;
+  let balance=pot;
+  for(let i=0;i<years*12;i++){ balance=balance*(1+rate)+contrib; }
+  document.getElementById('pensionFuture').innerText=`Projected pot: ${currSymbol}${Math.round(balance).toLocaleString()}`;
+  const income=balance*0.04/12;
+  document.getElementById('pensionIncome').innerText=`Approx. monthly income (4% rule): ${currSymbol}${income.toFixed(2)}`;
+  document.getElementById('pensionResults').style.display='block';
+}
 </script>
 <footer style="font-size:0.85em;color:#555;text-align:center;margin-top:3em;padding-top:2em;border-top:1px solid #ddd;">
   <p>⚠️ These calculators are for informational purposes only and do not constitute financial advice.</p>

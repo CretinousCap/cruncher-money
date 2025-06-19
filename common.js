@@ -97,7 +97,13 @@ function startCookieConsent(label){
       type:'opt-in',
       palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
       theme:'classic',
-      content:{message:'We use cookies to analyse site usage.',allow:'Accept',deny:'Reject',link:'Learn more',href:'/privacy.html'},
+      content:{
+        message:'Cruncher.Money is free to use — we rely on anonymous usage data and affiliate links to keep improving these calculators. Please accept cookies so we can keep building great free tools!',
+        allow:'Accept',
+        deny:'Reject',
+        link:'Learn more',
+        href:'/privacy.html'
+      },
       onInitialise:function(){ if(this.hasConsented()) loadGA(label); },
       onStatusChange:function(){ if(this.hasConsented()) loadGA(label); }
     });

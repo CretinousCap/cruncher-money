@@ -3,27 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home — Cruncher.Money</title>
+  <title>Cruncher.Money — Free Financial Calculators</title>
+  <meta name="description" content="Free, fast money calculators to help you make smarter financial decisions." />
+  <script src="common.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-  <script>
-    window.addEventListener('load',function(){
-      window.cookieconsent.initialise({
-        palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
-        theme:'classic',
-        content:{message:'We use cookies to analyse site usage.',dismiss:'Accept',link:'Learn more',href:'/privacy.html'}
-      });
-    });
-  </script>
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
   <style>
     body{font-family:'Inter',sans-serif;background:#f4f7fb;margin:0;padding:2em;color:#0a0a0a;text-align:center;}
     a{color:#007AFF;text-decoration:none;}
+    ul{list-style:none;padding:0;}
+    li{margin:0.5em 0;}
     .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
   </style>
 </head>
 <body>
   <h1>Cruncher.Money</h1>
-  <p>Quick, mobile-friendly calculators for smarter money decisions.</p>
-  <p><a href="/all-calculators.html">Browse all calculators</a></p>
+  <p>Cruncher.Money — free tools to help you make smarter financial decisions.</p>
+  <div class="popular">
+    <h2>Popular Calculators</h2>
+    <ul>
+      <li><a href="/mortgage-overpayment.html">Mortgage Overpayment</a></li>
+      <li><a href="/ltv.html">Loan-to-Value</a></li>
+      <li><a href="/savings-goal.html">Savings Goal</a></li>
+      <li><a href="/fire.html">FIRE</a></li>
+    </ul>
+    <p><a href="/all-calculators.html">Browse all calculators</a></p>
+  </div>
+  <script>startCookieConsent('Home');</script>
 </body>
 </html>
