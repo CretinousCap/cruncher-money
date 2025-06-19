@@ -5,28 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mortgage Switch Calculator — Cruncher.Money</title>
   <meta name="description" content="Check if switching your mortgage could save you money.">
+  <script src="common.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-  <script src="common.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Calculator","name":"Mortgage Switch Calculator","description":"Check if switching your mortgage could save you money.","url":"https://cruncher.money/mortgage-switch.html","creator":{"@type":"Organization","name":"Cruncher.Money"}}</script>
   <style>
     body{font-family:'Inter',sans-serif;background:#f4f7fb;margin:0;padding:2em;color:#0a0a0a;}
     .cc-card{background:#fff;padding:2em;max-width:600px;margin:2em auto;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.05);text-align:center;}
+    .cc-group{margin-top:1.5em;}
+    .cc-group label{font-weight:600;}
+    .curr-symbol{margin-right:0.15em;}
+    .cc-subtle{color:#555;font-size:0.9em;margin-left:0.5em;}
+    .cc-error{color:#d00;font-size:0.9em;display:none;margin-top:0.5em;}
+    .cc-button{background:#007AFF;color:#fff;border:none;padding:12px;width:100%;border-radius:6px;font-weight:600;margin-top:1.5em;cursor:pointer;}
+    .results{display:none;margin-top:2em;background:#e6f0ff;padding:1em;border-radius:8px;}
+    input[type=range]{width:100%;box-sizing:border-box;}
+    .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
     .cc-region{display:none;margin-top:1em;font-size:0.95em;}
     .cc-region a{color:#007AFF;text-decoration:none;font-weight:bold;}
-    .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
   </style>
 </head>
 <body>
   <div class="cc-card">
     <h1 id="pageTitle">Mortgage Switch Calculator</h1>
-    <p id="introText">This calculator is coming soon.</p>
-    <div class="cc-region" id="ctaSwitch"></div>
-    <p class="feedback">Was this helpful? <a href="https://tally.so/yourformid" target="_blank">Leave feedback</a></p>
+    <p id="introText">Estimate potential savings if you switch to a lower mortgage rate.</p>
+    <div class="cc-group">
+      <label>Outstanding Balance (<span class="curr-symbol">€</span>): <span class="cc-subtle" id="switchBalanceDisplay">200,000</span></label>
+      <input type="range" id="switchBalance" min="50000" max="1000000" step="1000" value="200000" oninput="document.getElementById('switchBalanceDisplay').innerText=parseInt(this.value).toLocaleString();updateCurrencyDisplays()">
+    </div>
+    <div class="cc-group">
+      <label>Term Remaining (Years): <span class="cc-subtle" id="switchTermDisplay">20</span></label>
+      <input type="range" id="switchTerm" min="1" max="35" step="1" value="20" oninput="document.getElementById('switchTermDisplay').innerText=this.value;">
+    </div>
+    <div class="cc-group">
+      <label>Current Rate (%): <span class="cc-subtle" id="switchCurrentRateDisplay">3.5%</span></label>
+      <input type="range" id="switchCurrentRate" min="1" max="10" step="0.1" value="3.5" oninput="document.getElementById('switchCurrentRateDisplay').innerText=this.value+'%';">
+    </div>
+    <div class="cc-group">
+      <label>New Rate (%): <span class="cc-subtle" id="switchNewRateDisplay">2.5%</span></label>
+      <input type="range" id="switchNewRate" min="0.5" max="10" step="0.1" value="2.5" oninput="document.getElementById('switchNewRateDisplay').innerText=this.value+'%';">
+    </div>
+    <div class="cc-group">
+      <label>Switching Fees (<span class="curr-symbol">€</span>): <span class="cc-subtle" id="switchFeeDisplay">1,000</span></label>
+      <input type="range" id="switchFee" min="0" max="10000" step="100" value="1000" oninput="document.getElementById('switchFeeDisplay').innerText=parseInt(this.value).toLocaleString();updateCurrencyDisplays()">
+    </div>
+    <button onclick="calculateSwitch()" class="cc-button">Calculate</button>
+    <p id="switchError" class="cc-error"></p>
+    <div class="results" id="switchResults">
+      <p id="switchMonthly"></p>
+      <p id="switchBreakeven"></p>
+      <div class="cc-region" id="ctaSwitch"></div>
+      <p class="feedback">Was this helpful? <a href="https://tally.so/r/mOKja7" target="_blank">Leave feedback</a></p>
+    </div>
   </div>
 <script>
+let currSymbol='€';
 startCookieConsent('Mortgage Switch');
-fetchRegion().then(d=>{const c=d.country_code;const n=d.country_name||'your region';applyPageText('mortgageSwitch',c,n);showCTA('mortgage','ctaSwitch',c,n);}).catch(()=>{applyPageText('mortgageSwitch','default','your region');showCTA('mortgage','ctaSwitch','default','your region');});
+fetchRegion().then(d=>{const c=d.country_code;const n=d.country_name||'your region';currSymbol=currencySymbol[c]||currencySymbol.default;applyPageText('mortgageSwitch',c,n);showCTA('mortgage','ctaSwitch',c,n);updateCurrencyDisplays();}).catch(()=>{applyPageText('mortgageSwitch','default','your region');showCTA('mortgage','ctaSwitch','default','your region');updateCurrencyDisplays();});
+
+function updateCurrencyDisplays(){
+  document.querySelectorAll('.curr-symbol').forEach(el=>el.innerText=currSymbol);
+  document.getElementById('switchBalanceDisplay').innerText=parseInt(document.getElementById('switchBalance').value).toLocaleString();
+  document.getElementById('switchFeeDisplay').innerText=parseInt(document.getElementById('switchFee').value).toLocaleString();
+}
+
+function calculateSwitch(){
+  const balance=parseFloat(document.getElementById('switchBalance').value);
+  const term=parseInt(document.getElementById('switchTerm').value);
+  const currentRate=parseFloat(document.getElementById('switchCurrentRate').value)/100/12;
+  const newRate=parseFloat(document.getElementById('switchNewRate').value)/100/12;
+  const fee=parseFloat(document.getElementById('switchFee').value);
+  const months=term*12;
+  const x1=Math.pow(1+currentRate,months);
+  const currMonthly=(balance*x1*currentRate)/(x1-1);
+  const x2=Math.pow(1+newRate,months);
+  const newMonthly=(balance*x2*newRate)/(x2-1);
+  const saving=currMonthly-newMonthly;
+  const breakeven=saving>0?Math.ceil(fee/saving):0;
+  document.getElementById('switchMonthly').innerText=`Monthly saving: ${currSymbol}${saving.toFixed(2)}`;
+  document.getElementById('switchBreakeven').innerText=`Break-even in ${breakeven} months`;
+  document.getElementById('switchResults').style.display='block';
+}
 </script>
 <footer style="font-size:0.85em;color:#555;text-align:center;margin-top:3em;padding-top:2em;border-top:1px solid #ddd;">
   <p>⚠️ These calculators are for informational purposes only and do not constitute financial advice.</p>

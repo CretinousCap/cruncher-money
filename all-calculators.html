@@ -4,17 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>All Calculators — Cruncher.Money</title>
+  <meta name="description" content="Browse every calculator on Cruncher.Money, from mortgages to savings and investing." />
+  <script src="common.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-  <script>
-    window.addEventListener('load',function(){
-      window.cookieconsent.initialise({
-        palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
-        theme:'classic',
-        content:{message:'We use cookies to analyse site usage.',dismiss:'Accept',link:'Learn more',href:'/privacy.html'}
-      });
-    });
-  </script>
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
   <style>
     body{font-family:'Inter',sans-serif;background:#f4f7fb;margin:0;padding:2em;color:#0a0a0a;max-width:700px;margin:auto;}
     h1{font-size:2em;margin-bottom:0.5em;}
@@ -41,5 +35,6 @@
     <li><a href="/investment-return.html">Investment Return Calculator</a></li>
   </ul>
   <p><a href="/">&#8592; Back to home</a></p>
+  <script>startCookieConsent('All Calculators');</script>
 </body>
 </html>
