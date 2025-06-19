@@ -8,7 +8,7 @@ const ctaLinks={
   FR:{flag:'🇫🇷',affiliate:false,mortgage:'https://meilleurtaux.com/',savings:'https://lelynx.fr/banque/comparateur/livret-epargne/',fire:null,pension:''},
   DE:{flag:'🇩🇪',affiliate:false,mortgage:'https://check24.de/',savings:'https://check24.de/tagesgeld/',fire:null,pension:''},
   IN:{flag:'🇮🇳',affiliate:false,mortgage:'https://bankbazaar.com/home-loan.html',savings:'https://bankbazaar.com/savings-account.html',fire:null,pension:''},
-  default:{flag:'🌍',affiliate:false,mortgage:'https://www.google.com/search?q=compare+mortgage+rates+${country_name}',savings:'https://www.google.com/search?q=best+savings+accounts+${country_name}',fire:'https://www.google.com/search?q=fire+movement+${country_name}',pension:''}
+  default:{flag:'🌍',affiliate:false,mortgage:'https://www.google.com/search?q=compare+mortgage+rates+${country_name}',savings:'https://www.google.com/search?q=best+savings+accounts+${country_name}',fire:'https://www.google.com/search?q=fire+movement+${country_name}',pension:'https://www.google.com/search?q=pension+options+${country_name}'}
 };
 
 const pageTitles={
@@ -22,7 +22,7 @@ const pageTitles={
 };
 
 const pageText={
-  fire:{default:'Estimate how long it might take you to reach financial independence.'},
+  fire:{default:'This calculator helps you estimate how long it might take to reach Financial Independence or Retire Early (FIRE). Your "FIRE number" is the amount of invested savings you\'d need to cover your target annual expenses, without needing to work. The more you can save now, and the lower your future expenses, the faster you can achieve FIRE.'},
   mortgageOverpayment:{default:'See how extra payments reduce your term and interest.'},
   ltv:{default:'Work out your current loan-to-value ratio and equity.'},
   savings:{default:'Find the monthly amount needed to reach your goal.'},
@@ -36,7 +36,7 @@ function getDynamicCTA(type,name){
     mortgage:`Compare mortgage offers in ${name}`,
     savings:`Explore savings rates in ${name}`,
     fire:`Learn about FIRE in ${name}`,
-    pension:`Explore pension options in ${name}`
+    pension:`See pension options in ${name}`
   };
   return map[type]||'';
 }
