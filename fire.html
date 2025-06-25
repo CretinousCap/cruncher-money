@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
   <title>FIRE Calculator — Cruncher.Money</title>
   <meta name="description" content="Estimate when your investments could let you reach financial independence.">
   <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
@@ -11,7 +12,7 @@
   <script src="common.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Calculator","name":"FIRE Calculator","description":"Estimate when your investments could let you reach financial independence.","url":"https://cruncher.money/fire.html","creator":{"@type":"Organization","name":"Cruncher.Money"}}</script>
   <style>
-    body{font-family:'Inter',sans-serif;background:#f4f7fb;margin:0;padding:2em;color:#0a0a0a;}
+    body{font-family:'Inter',sans-serif;background:#F4F2EC;margin:0;padding:2em;color:#0a0a0a;}
     .cc-card{background:#fff;padding:2em;max-width:600px;margin:2em auto;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.05);}
     .cc-group{margin-top:1.5em;}
     .cc-group label{font-weight:600;}
@@ -32,6 +33,7 @@
     <h1 id="pageTitle">FIRE Calculator</h1>
     <p id="introText">This calculator helps you estimate how long it might take to reach Financial Independence or Retire Early (FIRE). Your "FIRE number" is the amount of invested savings you'd need to cover your target annual expenses, without needing to work. The more you can save now, and the lower your future expenses, the faster you can achieve FIRE.</p>
     <p class="cc-overview">Estimate how your savings and contributions can help you reach financial independence.</p>
+      <p><a href="/fire-guide.html">Read our FIRE Guide</a></p>
     <div class="cc-group">
       <label>Current Savings (<span class="curr-symbol">€</span><span class="cc-subtle" id="savingsDisplay">50,000</span>)</label>
       <input type="range" id="fireSavings" min="0" max="2000000" step="1000" value="50000" oninput="document.getElementById('savingsDisplay').innerText=parseInt(this.value).toLocaleString();updateCurrencyDisplays()">
