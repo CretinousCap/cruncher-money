@@ -8,7 +8,7 @@ index c67bb1bc160ba60518b274d9ccf6722d097fe113..6cd0e847ed05aaefc78966feb6fa9985
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>Page Not Found — Cruncher.Money</title>
    <meta name="description" content="Page not found. Discover our range of money calculators instead.">
    <script src="common.js"></script>
@@ -33,7 +33,7 @@ index 774e05b7426a6490cd3c9b9632211da49006b6b3..6a46c0dff12524ad1c477084eef9fb04
  <head>
    <meta charset="UTF-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1" />
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>About Cruncher.Money</title>
    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
@@ -82,7 +82,7 @@ index 7a3fb734cdb7781ae6080122bb9e47deef7a0add..9d7a5443c38e689a2ec0976adb8b85c2
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>All Calculators — Cruncher.Money</title>
    <meta name="description" content="Browse every calculator on Cruncher.Money, from mortgages to savings and investing." />
    <script src="common.js"></script>
@@ -117,7 +117,7 @@ index 7a3fb734cdb7781ae6080122bb9e47deef7a0add..9d7a5443c38e689a2ec0976adb8b85c2
    </ul>
    <p><a href="/">&#8592; Back to home</a></p>
    <script>startCookieConsent('All Calculators');</script>
-diff --git a/assets/img/cruncher-money-favicon-512.png b/assets/img/cruncher-money-favicon-512.png
+diff --git a/assets/img/Cruncher-Money-Favicon-512x512.png b/assets/img/Cruncher-Money-Favicon-512x512.png
 new file mode 100644
 index 0000000000000000000000000000000000000000..a090e66266bf7100ebb389e65c0b56cf3e99b777
 GIT binary patch
@@ -3037,7 +3037,7 @@ index 220575b9050b72ee12bb0b219f8bd12b59d1f255..667804e68254290ed7d569f614ccb177
  <head>
    <meta charset="UTF-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1" />
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>Disclaimer - Cruncher.Money</title>
    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
@@ -3088,7 +3088,7 @@ index 0000000000000000000000000000000000000000..055761d90b27f50df351869b5980f7e5
 +<head>
 +  <meta charset="UTF-8">
 +  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
 +  <title>FIRE Calculator UK / Ireland — How to use &amp; plan your FIRE goal</title>
 +  <meta name="description" content="Use our FIRE Calculator to plan your path to Financial Independence &amp; Retire Early (FIRE) — free tools for the UK, Ireland and Europe." />
 +  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
@@ -3157,7 +3157,7 @@ index 136b298ccf21e007e4526725b91e897a1fc797fb..4a363b322220e55e9be2f3979e185e53
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>FIRE Calculator — Cruncher.Money</title>
    <meta name="description" content="Estimate when your investments could let you reach financial independence.">
    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
@@ -3224,7 +3224,7 @@ index 7f6e62774c394e1872bcd5a68089e20ae66ddfa9..92ef0afc27c722ef32f6d9af1a782237
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>Cruncher.Money — Free Financial Calculators</title>
    <meta name="description" content="Free, fast money calculators to help you make smarter financial decisions." />
    <script src="common.js"></script>
@@ -3266,7 +3266,7 @@ index a188ddc87bd3f5d250e33931c7504f9c51a178e4..40757bfed860d2528cd8f15d63108c59
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>Investment Return Calculator — Cruncher.Money</title>
    <meta name="description" content="Calculate potential returns on your investments.">
    <script src="common.js"></script>
@@ -3311,7 +3311,7 @@ index dd7a08cc8d972f528a994efce8aa40d9da305c7c..e45c229f35a3dd794b12aae04d38bba2
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>Loan-to-Value Calculator — Cruncher.Money</title>
    <meta name="description" content="Estimate your current loan-to-value ratio and home equity.">
    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
@@ -3356,7 +3356,7 @@ index 6c838f0770515c64ae725f54e1bc27eb05844690..59af3fed5ecad9f54731df5fbe9d865d
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>Mortgage Overpayment Calculator — Cruncher.Money</title>
    <meta name="description" content="See how extra mortgage payments could shorten your term and reduce interest.">
    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
@@ -3401,7 +3401,7 @@ index 4d65b3950dfb12f8fd0ac4f6906dfc2fa7fdebe5..9e3efbbc094745e02a3b5946588da362
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>Mortgage Switch Calculator — Cruncher.Money</title>
    <meta name="description" content="Check if switching your mortgage could save you money.">
    <script src="common.js"></script>
@@ -3446,7 +3446,7 @@ index 8a423b50b46abd70be680a82743e39d79cde628c..43d05437af0a309dda252df83ff87abc
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>Pension Calculator — Cruncher.Money</title>
    <meta name="description" content="Check how much you may need for retirement.">
    <script src="common.js"></script>
@@ -3492,7 +3492,7 @@ index 6d2d154a3e6e5b34d863415ffa6014a5d6db340e..794697d840565956199361ba9cd4bbe7
    <meta charset="UTF-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1" />
 -  <title>Privacy Policy - Cruncher.Money</title>
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
 +  <title>Privacy &amp; Cookie Policy</title>
    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
@@ -3565,7 +3565,7 @@ index 5fc8f003f3b23dce7d6302a4397e836ceac4f1ad..699f81405fb4bf3ccfbd135ee00b2010
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <link rel="icon" href="/assets/img/cruncher-money-favicon-512.png" type="image/png" />
++  <link rel="icon" href="/assets/img/Cruncher-Money-Favicon-512x512.png" type="image/png" />
    <title>Savings Goal Calculator — Cruncher.Money</title>
    <meta name="description" content="Work out how much to save each month to hit your goal.">
    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
