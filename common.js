@@ -1,4 +1,6 @@
 const currencySymbol={IE:'€',GB:'£',US:'$',CA:'$',AU:'$',IN:'₹',FR:'€',DE:'€',default:'€'};
+const affiliatePrefix={awin:'',cj:''};
+let affiliateNetwork='awin';
 const ctaLinks={
   IE:{flag:'🇮🇪',affiliate:true,mortgage:'https://switcher.ie/mortgages',savings:'https://bonkers.ie/compare-savings-accounts/',fire:'https://switcher.ie/investments/',pension:''},
   GB:{flag:'🇬🇧',affiliate:true,mortgage:'https://moneyfacts.co.uk/mortgages',savings:'https://moneyfacts.co.uk/savings-accounts/',fire:'https://moneysavingexpert.com/savings/investment-beginners/',pension:''},
@@ -35,7 +37,7 @@ function getDynamicCTA(type,name){
   const map={
     mortgage:`Compare mortgage offers in ${name}`,
     savings:`Explore savings rates in ${name}`,
-    fire:`Learn about FIRE in ${name}`,
+    fire:'Compare platforms to help you reach your FIRE goal',
     pension:`See pension options in ${name}`
   };
   return map[type]||'';
@@ -50,6 +52,10 @@ function showCTA(type,id,code,name){
     flag=ctaLinks.default.flag;
   }else{
     url=url.replace('${country_name}',encodeURIComponent(name));
+    if(data.affiliate){
+      const prefix=affiliatePrefix[affiliateNetwork]||'';
+      if(prefix) url=prefix+encodeURIComponent(url);
+    }
   }
   if(!url) return;
   const text=getDynamicCTA(type,name);
@@ -61,7 +67,19 @@ function showCTA(type,id,code,name){
 }
 
 function fetchRegion(){
-  return fetch('https://ipapi.co/json/').then(r=>r.json());
+  return fetch('https://ipapi.co/json/').then(r=>{
+    const limit=parseInt(r.headers.get('X-Ratelimit-Limit'))||0;
+    const remaining=parseInt(r.headers.get('X-Ratelimit-Remaining'))||0;
+    if(limit&&remaining/limit<0.2){
+      console.warn('ipapi usage over 80%');
+    }
+    if(!r.ok) throw new Error('ipapi fail');
+    return r.json();
+  }).catch(()=>{
+    console.log('Using IP fallback');
+    document.dispatchEvent(new Event('ipFallbackUsed'));
+    return fetch('https://ipwhois.io/json').then(r=>r.json());
+  });
 }
 
 function applyPageText(key,code,name){
@@ -98,7 +116,7 @@ function startCookieConsent(label){
       palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
       theme:'classic',
       content:{
-        message:'Cruncher.Money is free to use — we rely on anonymous usage data and affiliate links to keep improving these calculators. Please accept cookies so we can keep building great free tools!',
+        message:'We use cookies to analyse site usage (Google Analytics), only after you click Accept.',
         allow:'Accept',
         deny:'Reject',
         link:'Learn more',
