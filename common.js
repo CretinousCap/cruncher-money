@@ -113,7 +113,7 @@ function startCookieConsent(label){
   window.addEventListener('load',function(){
     window.cookieconsent.initialise({
       type:'opt-in',
-      palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
+      palette:{popup:{background:'#f7f5ed',text:'#000'},button:{background:'#005437',text:'#fff'}},
       theme:'classic',
       content:{
         message:'We use cookies to analyse site usage (Google Analytics), only after you click Accept.',
@@ -125,5 +125,8 @@ function startCookieConsent(label){
       onInitialise:function(){ if(this.hasConsented()) loadGA(label); },
       onStatusChange:function(){ if(this.hasConsented()) loadGA(label); }
     });
+    var s=document.createElement('style');
+    s.innerHTML='.cc-btn.cc-deny{background:#fff;border:1px solid #888;color:#000;}';
+    document.head.appendChild(s);
   });
 }

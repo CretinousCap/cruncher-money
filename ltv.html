@@ -11,23 +11,24 @@
   <script src="common.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Calculator","name":"Loan-to-Value Calculator","description":"Estimate your current loan-to-value ratio and home equity.","url":"https://cruncher.money/ltv.html","creator":{"@type":"Organization","name":"Cruncher.Money"}}</script>
   <style>
-    body{font-family:'Inter',sans-serif;background:#F4F2EC;margin:0;padding:2em;color:#0a0a0a;}
+    body{font-family:'Inter',sans-serif;background:#f7f5ed;margin:0;padding:2em;color:#0a0a0a;}
     .cc-card{background:#fff;padding:2em;max-width:600px;margin:2em auto;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.05);}
     .cc-group{margin-top:1.5em;}
     .cc-group label{font-weight:600;}
     .curr-symbol{margin-right:0.15em;}
     .cc-subtle{color:#555;font-size:0.9em;margin-left:0.5em;}
     .cc-error{color:#d00;font-size:0.9em;display:none;margin-top:0.5em;}
-    .cc-button{background:#007AFF;color:#fff;border:none;padding:12px;width:100%;border-radius:6px;font-weight:600;margin-top:1.5em;cursor:pointer;}
+    .cc-button{background:#005437;color:#fff;border:none;padding:12px;width:100%;border-radius:6px;font-weight:600;margin-top:1.5em;cursor:pointer;}
     .results{display:none;margin-top:2em;background:#e6f0ff;padding:1em;border-radius:8px;}
-    input[type=range]{width:100%;box-sizing:border-box;}
+    input[type=range]{width:100%;box-sizing:border-box;accent-color:#005437;}
     .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
     .cc-region{display:none;margin-top:1em;font-size:0.95em;}
-    .cc-region a{color:#007AFF;text-decoration:none;font-weight:bold;}
+    .cc-region a{color:#005437;text-decoration:none;font-weight:bold;}
     .cc-overview{font-size:0.95em;color:#333;margin-bottom:1em;}
   </style>
 </head>
 <body>
+  <a href="/"><picture><source media="(max-width:480px)" srcset="/assets/img/Cruncher-Money-Favicon-512x512.png"><img src="/assets/img/Cruncher-Money-Logo.png" alt="Cruncher.Money logo" class="site-logo"></picture></a>
   <div class="cc-card">
     <h1 id="pageTitle">Loan-to-Value Calculator</h1>
     <p id="introText">Estimate your loan-to-value ratio and home equity.</p>
@@ -59,6 +60,7 @@ function calculateLTV(){const value=parseFloat(document.getElementById('ltvValue
   <p>⚠️ These calculators are for informational purposes only and do not constitute financial advice.</p>
   <p>
     <a href="/all-calculators.html">All Calculators</a> |
+    <a href="/video-of-the-month.html">Video of the Month</a> |
     <a href="/about.html">About</a> |
     <a href="/disclaimer.html">Disclaimer</a>
   </p>

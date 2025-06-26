@@ -12,23 +12,24 @@
   <script src="common.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Calculator","name":"FIRE Calculator","description":"Estimate when your investments could let you reach financial independence.","url":"https://cruncher.money/fire.html","creator":{"@type":"Organization","name":"Cruncher.Money"}}</script>
   <style>
-    body{font-family:'Inter',sans-serif;background:#F4F2EC;margin:0;padding:2em;color:#0a0a0a;}
+    body{font-family:'Inter',sans-serif;background:#f7f5ed;margin:0;padding:2em;color:#0a0a0a;}
     .cc-card{background:#fff;padding:2em;max-width:600px;margin:2em auto;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.05);}
     .cc-group{margin-top:1.5em;}
     .cc-group label{font-weight:600;}
     .cc-subtle{color:#555;font-size:0.9em;margin-left:0.5em;}
     .curr-symbol{margin-right:0.15em;}
-    .cc-button{background:#007AFF;color:#fff;border:none;padding:12px;width:100%;border-radius:6px;font-weight:600;}
+    .cc-button{background:#005437;color:#fff;border:none;padding:12px;width:100%;border-radius:6px;font-weight:600;}
     .results{display:none;margin-top:1em;}
-    input[type=range]{width:100%;box-sizing:border-box;}
+    input[type=range]{width:100%;box-sizing:border-box;accent-color:#005437;}
     .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
     .cc-region{display:none;margin-top:1em;font-size:0.95em;}
-    .cc-region a{color:#007AFF;text-decoration:none;font-weight:bold;}
+    .cc-region a{color:#005437;text-decoration:none;font-weight:bold;}
     .cc-overview{font-size:0.95em;color:#333;margin-bottom:1em;}
     .cc-error{color:#d00;font-size:0.9em;display:none;margin-top:0.5em;}
   </style>
 </head>
 <body>
+  <a href="/"><picture><source media="(max-width:480px)" srcset="/assets/img/Cruncher-Money-Favicon-512x512.png"><img src="/assets/img/Cruncher-Money-Logo.png" alt="Cruncher.Money logo" class="site-logo"></picture></a>
   <div class="cc-card">
     <h1 id="pageTitle">FIRE Calculator</h1>
     <p id="introText">This calculator helps you estimate how long it might take to reach Financial Independence or Retire Early (FIRE). Your "FIRE number" is the amount of invested savings you'd need to cover your target annual expenses, without needing to work. The more you can save now, and the lower your future expenses, the faster you can achieve FIRE.</p>
@@ -65,7 +66,7 @@ let fireChart;
 startCookieConsent('FIRE Calculator');
 fetchRegion().then(d=>{const c=d.country_code;const n=d.country_name||'your region';currSymbol=currencySymbol[c]||currencySymbol.default;applyPageText('fire',c,n);showCTA('fire','ctaFire',c,n);updateCurrencyDisplays();}).catch(()=>{applyPageText('fire','default','your region');showCTA('fire','ctaFire','default','your region');updateCurrencyDisplays();});
 function updateCurrencyDisplays(){document.querySelectorAll('.curr-symbol').forEach(el=>el.innerText=currSymbol);document.getElementById('savingsDisplay').innerText=parseInt(document.getElementById('fireSavings').value).toLocaleString();document.getElementById('contribDisplay').innerText=parseInt(document.getElementById('fireContrib').value).toLocaleString();document.getElementById('expenseDisplay').innerText=parseInt(document.getElementById('fireExpenses').value).toLocaleString();}
-function calculateFire(){const savings=parseFloat(document.getElementById('fireSavings').value);const monthly=parseFloat(document.getElementById('fireContrib').value);const annual=parseFloat(document.getElementById('fireReturn').value)/100;const expenses=parseFloat(document.getElementById('fireExpenses').value);const target=expenses*25;let balance=savings;let months=0;const labels=[0];const dataPoints=[balance];while(balance<target&&months<1000){balance=balance*(1+annual/12)+monthly;months++;if(months%12===0||balance>=target){labels.push((months/12).toFixed(1));dataPoints.push(balance);}}const years=months/12;document.getElementById('yearsToFire').innerText=`Years to FIRE: ${years.toFixed(1)}`;document.getElementById('fireValue').innerText=`Projected portfolio at FIRE: ${currSymbol}${Math.round(balance).toLocaleString()}`;document.getElementById('fireResults').style.display='block';if(fireChart)fireChart.destroy();const ctx=document.getElementById('fireChart').getContext('2d');fireChart=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{label:'Portfolio',data:dataPoints,borderColor:'#007AFF',fill:false}]},options:{scales:{x:{title:{display:true,text:'Years'}},y:{title:{display:true,text:'Value'}}}}});}
+function calculateFire(){const savings=parseFloat(document.getElementById('fireSavings').value);const monthly=parseFloat(document.getElementById('fireContrib').value);const annual=parseFloat(document.getElementById('fireReturn').value)/100;const expenses=parseFloat(document.getElementById('fireExpenses').value);const target=expenses*25;let balance=savings;let months=0;const labels=[0];const dataPoints=[balance];while(balance<target&&months<1000){balance=balance*(1+annual/12)+monthly;months++;if(months%12===0||balance>=target){labels.push((months/12).toFixed(1));dataPoints.push(balance);}}const years=months/12;document.getElementById('yearsToFire').innerText=`Years to FIRE: ${years.toFixed(1)}`;document.getElementById('fireValue').innerText=`Projected portfolio at FIRE: ${currSymbol}${Math.round(balance).toLocaleString()}`;document.getElementById('fireResults').style.display='block';if(fireChart)fireChart.destroy();const ctx=document.getElementById('fireChart').getContext('2d');fireChart=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{label:'Portfolio',data:dataPoints,borderColor:'#005437',fill:false}]},options:{scales:{x:{title:{display:true,text:'Years'}},y:{title:{display:true,text:'Value'}}}}});}
 </script>
 <footer style="font-size:0.85em;color:#555;text-align:center;margin-top:3em;padding-top:2em;border-top:1px solid #ddd;">
   <p>⚠️ These calculators are for informational purposes only and do not constitute financial advice.</p>
@@ -73,6 +74,7 @@ function calculateFire(){const savings=parseFloat(document.getElementById('fireS
     <a href="/about.html">About</a> |
     <a href="/disclaimer.html">Disclaimer</a> |
     <a href="/all-calculators.html">All Calculators</a>
+    <a href="/video-of-the-month.html">Video of the Month</a>
   </p>
   <p style="margin-top:1em;">&copy; 2024 Cruncher.Money</p>
 </footer>
