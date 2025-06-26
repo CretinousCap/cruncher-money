@@ -7,19 +7,10 @@
   <title>Disclaimer - Cruncher.Money</title>
   <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-  <script>
-    window.addEventListener('load', function(){
-      window.cookieconsent.initialise({
-        palette:{popup:{background:'#000'},button:{background:'#f1d600',text:'#000'}},
-        theme:'classic',
-        content:{message:'We use cookies to analyse site usage (Google Analytics), only after you click Accept.',dismiss:'Accept',link:'Learn more',href:'/privacy.html'}
-      });
-    });
-  </script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #F4F2EC;
+        background: #f7f5ed;
       color: #0a0a0a;
       max-width: 700px;
       margin: 2em auto;
@@ -27,11 +18,15 @@
     }
     h1 { font-size: 2em; margin-bottom: 0.5em; }
     p { line-height: 1.6em; margin-bottom: 1em; }
-    a { color: #007AFF; text-decoration: none; }
+      a { color: #004225; text-decoration: none; }
+      a:hover{text-decoration:underline;}
+      .site-logo{max-width:180px;height:auto;margin-bottom:1em;}
+      @media(max-width:480px){.site-logo{max-width:120px;}}
     .cc-window.cc-banner{position:fixed;bottom:0;left:0;width:100%;}
   </style>
 </head>
 <body>
+  <a href="/"><picture><source media="(max-width:480px)" srcset="/assets/img/Cruncher-Money-Favicon-512x512.png"><img src="/assets/img/Cruncher-Money-Logo.png" alt="Cruncher.Money logo" class="site-logo"></picture></a>
   <h1>Disclaimer</h1>
   <p>The calculators and information provided on Cruncher.Money are for general informational purposes only and do not constitute financial advice.</p>
   <p>We aim to keep all tools accurate and useful, but individual circumstances vary and financial decisions should always be discussed with a qualified advisor. Legal, tax, and regulatory considerations may apply depending on your country and personal situation.</p>
@@ -39,5 +34,6 @@
   <p>Cruncher.Money accepts no liability for any actions taken based on the calculators or content on this site. Use of this site is entirely at your own risk.</p>
   <p>Some links on this site may be affiliate links — this helps fund ongoing development and improvements.</p>
   <p><a href="/">← Back to home</a></p>
+  <script>startCookieConsent("Disclaimer");</script>
 </body>
 </html>
